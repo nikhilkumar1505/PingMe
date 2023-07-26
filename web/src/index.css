@@ -1,0 +1,39 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-size: 62.5%;
+}
+p {
+	font-size: 1.6rem;
+}
+
+@media screen and (min-width: 1200px) {
+	* {
+		font-size: 70%;
+	}
+}
+
+@media screen and (min-width: 930px) and (max-width: 1200px) {
+	* {
+		font-size: 62%;
+	}
+}
+
+@media screen and (min-width: 670px) and (max-width: 930px) {
+	* {
+		font-size: 55%;
+	}
+}
+
+@media screen and (min-width: 430px) and (max-width: 670px) {
+	* {
+		font-size: 52%;
+	}
+}
+
+@media screen and (max-width: 430px) {
+	* {
+		font-size: 47%;
+	}
+}
