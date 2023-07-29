@@ -1,11 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,800&family=Noto+Sans&display=swap');
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	font-size: 62.5%;
+	font-weight: 500;
 }
+
 p {
-	font-size: 1.6rem;
+	font-size: 1.4rem;
+	font-family: 'Noto Sans', sans-serif;
+}
+
+h1 {
+	font-family: 'Abril Fatface', cursive;
+	font-weight: 'bold';
+	font-size: 3rem;
+}
+
+h2 {
+	font-family: 'Bodoni Moda', serif;
+	font-size: 2.5rem;
 }
 
 @media screen and (min-width: 1200px) {
@@ -16,24 +32,24 @@ p {
 
 @media screen and (min-width: 930px) and (max-width: 1200px) {
 	* {
-		font-size: 62%;
+		font-size: 67%;
 	}
 }
 
 @media screen and (min-width: 670px) and (max-width: 930px) {
 	* {
-		font-size: 55%;
+		font-size: 60%;
 	}
 }
 
 @media screen and (min-width: 430px) and (max-width: 670px) {
 	* {
-		font-size: 52%;
+		font-size: 57%;
 	}
 }
 
 @media screen and (max-width: 430px) {
 	* {
-		font-size: 47%;
+		font-size: 52%;
 	}
 }
