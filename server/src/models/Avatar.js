@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const avatarSchema = mongoose.Schema({
+const avatarSchema = new mongoose.Schema({
 	image_url: {
 		type: String,
 		required: true,

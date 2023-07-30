@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import AvatarRoutes from './routes/Avatar.js';
+import AuthRoutes from './routes/Auth.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -9,9 +10,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(cors());
+
 app.use(express.json());
 
 app.use('/avatar', AvatarRoutes);
+app.use('/auth', AuthRoutes);
 
 app.use((error, req, res, next) => {
 	console.log(error);

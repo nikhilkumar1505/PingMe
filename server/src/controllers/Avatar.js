@@ -6,9 +6,6 @@ export const getAllAvatars = async (req, res, next) => {
 		const avatars = await Avatar.find();
 		res.status(200).json(avatars);
 	} catch (err) {
-		if (!err.statusCode) {
-			err.statusCode = 500;
-		}
 		next(err);
 	}
 };
@@ -31,9 +28,6 @@ export const addAvatar = async (req, res, next) => {
 		await avatar.save();
 		res.status(201).json(avatar);
 	} catch (err) {
-		if (!err.statusCode) {
-			err.statusCode = 500;
-		}
 		next(err);
 	}
 };
@@ -41,7 +35,6 @@ export const addAvatar = async (req, res, next) => {
 export const deleteAvatar = async (req, res, next) => {
 	try {
 		const result = validationResult(req);
-		console.log(result, req.params);
 		if (!result.isEmpty()) {
 			res.status(404).json({ message: 'avatar not found' });
 		}
@@ -51,9 +44,6 @@ export const deleteAvatar = async (req, res, next) => {
 		}
 		res.status(200).json({ message: 'avatar deleted', data: avatar });
 	} catch (err) {
-		if (!err.statusCode) {
-			err.statusCode = 500;
-		}
 		next(err);
 	}
 };
