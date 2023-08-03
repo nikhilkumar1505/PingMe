@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import './style.css';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 interface ITextInput {
 	value: string;
@@ -9,8 +10,7 @@ interface ITextInput {
 	placeholder?: string;
 	error?: string;
 	onChange: (e: any) => void;
-	StartIconComponent?: () => JSX.Element;
-	EndIconComponent?: () => JSX.Element;
+	passwordType?: boolean;
 }
 
 export const TextInput: React.FC<ITextInput> = ({
@@ -19,31 +19,41 @@ export const TextInput: React.FC<ITextInput> = ({
 	name,
 	onChange,
 	placeholder,
-	StartIconComponent,
-	EndIconComponent,
 	error,
+	passwordType,
 }) => {
+	const [showPassword, setShowPassword] = useState(true);
+	const Icon = showPassword ? AiFillEyeInvisible : AiFillEye;
+
+	const handleClick = useCallback(() => {
+		setShowPassword((prev) => !prev);
+	}, []);
 	return (
 		<Container>
 			<InputContainer>
-				{StartIconComponent && <StartIconComponent />}
 				<Input
 					value={value}
 					className='text-input'
-					type={type}
+					type={passwordType && showPassword ? 'password' : type}
 					name={name}
 					onChange={onChange}
 					placeholder={placeholder}
 				/>
-				{EndIconComponent && <EndIconComponent />}
+				{passwordType && (
+					<Icon
+						className='password-icon'
+						size={'2.1rem'}
+						onClick={handleClick}
+					/>
+				)}
 			</InputContainer>
-			{error && <ErrorText>{`*${error}`}</ErrorText>}
+			<ErrorText>{error ? `*${error}` : ''}</ErrorText>
 		</Container>
 	);
 };
 
 const Container = styled.div({
-	marginBottom: '2rem',
+	marginBottom: '1rem',
 	alignItems: 'flex-start',
 	display: 'flex',
 	flexDirection: 'column',
@@ -51,6 +61,7 @@ const Container = styled.div({
 
 const InputContainer = styled.div(({ theme }) => ({
 	display: 'flex',
+	position: 'relative',
 	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'space-between',
@@ -65,6 +76,7 @@ const ErrorText = styled.p(({ theme }) => ({
 	marginTop: '0.2rem',
 	marginLeft: '1rem',
 	color: theme.colors.error,
+	height: '1rem',
 }));
 
 const Input = styled.input(({ theme }) => ({
@@ -77,5 +89,6 @@ const Input = styled.input(({ theme }) => ({
 	fontSize: '1.6rem',
 	paddingLeft: '1rem',
 	color: theme.colors.white,
-	fontWeight: 700,
+	fontWeight: 500,
+	letterSpacing: '1.1px',
 }));

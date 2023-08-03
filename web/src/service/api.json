@@ -1,0 +1,10 @@
+{
+	"BASEURL": "http://localhost:5000/",
+	"LOGIN": "auth/login",
+	"REGISTER": "auth/register",
+	"FORGOT_PASSWORD": "auth/forgot-password",
+	"CHECK_EMAIL": "auth/check-email",
+	"SEND_OTP": "auth/send-otp",
+	"VERIFY_OTP": "/auth/verify-otp",
+	"AVATAR": "avatar"
+}

@@ -1,47 +1,72 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { styled } from 'styled-components';
 import backgroundImage from '../../assets/Images/bg1.png';
-import { Button, GlassMorphis, Logo, TextInput } from '../../components';
+import { GlassMorphis, Logo, Otp, Signup } from '../../components';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import ProfileFill from '../../components/organisim/ProfileFill';
+import { EmailSchema } from '../../utils/validation';
+import { sendOtp, checkEmailExits } from '../../store/controllers/';
+import { toast } from 'react-toastify';
 
 const Register = () => {
-	const emailUserNameFormik = useFormik({
+	const [page, setPage] = useState(1);
+	const [loading, setLoading] = useState(false);
+
+	const handleNext = useCallback(() => setPage((prev) => prev + 1), []);
+
+	const handleBack = useCallback(() => setPage((prev) => prev - 1), []);
+
+	const handleSubmit = useCallback(async (value: { email: string }) => {
+		try {
+			setLoading(true);
+			const isEmailExits = await checkEmailExits({ emailId: value.email });
+			if (!isEmailExits) {
+				const res = await sendOtp({ emailId: value.email });
+				if (res?.status === 200) {
+					toast.success('Otp is sent to emailId');
+					handleNext();
+				}
+			} else {
+				toast.error('User email already exits');
+			}
+		} finally {
+			setLoading(false);
+		}
+	}, []);
+
+	const signUpFormik = useFormik({
 		initialValues: {
-			username: '',
 			email: '',
 		},
-		onSubmit: () => console.log('submited'),
+		validationSchema: EmailSchema,
+		validateOnBlur: true,
+		validateOnChange: false,
+		onSubmit: handleSubmit,
 	});
+
+	const Body = useCallback(() => {
+		switch (page) {
+			case 1:
+				return <Signup formikValue={signUpFormik} isLoading={loading} />;
+			case 2:
+				return (
+					<Otp
+						email={signUpFormik.values.email}
+						handleNext={handleNext}
+						handlePrev={handleBack}
+					/>
+				);
+			case 3:
+				return <ProfileFill emailId={signUpFormik.values.email} />;
+			default:
+				return <></>;
+		}
+	}, [page, signUpFormik, loading]);
+
 	return (
 		<Container>
 			<Logo />
-			<GlassMorphis title={'Welcome'}>
-				<form onSubmit={emailUserNameFormik.submitForm}>
-					<TextInput
-						value={emailUserNameFormik.values.email}
-						type='text'
-						name='email'
-						placeholder='Email Id'
-						onChange={emailUserNameFormik.handleChange}
-					/>
-					<TextInput
-						value={emailUserNameFormik.values.username}
-						type='text'
-						name='username'
-						placeholder='username'
-						onChange={emailUserNameFormik.handleChange}
-					/>
-					<Button
-						text='register'
-						onClick={() => console.log('clicekd')}
-						type='submit'
-					/>
-					<LoginText>
-						Already have an account, <LinkText to='/login'>Login</LinkText>
-					</LoginText>
-				</form>
-			</GlassMorphis>
+			<GlassMorphis title={'Welcome'}>{Body()}</GlassMorphis>
 		</Container>
 	);
 };
@@ -50,29 +75,15 @@ const Container = styled.div({
 	backgroundImage: `url(${backgroundImage})`,
 	backgroundAttachment: 'fixed',
 	backgroundPosition: 'center',
-	width: '100vw',
-	height: '100vh',
+	width: '100%',
+	minHeight: '100vh',
+	height: '100%',
 	backgroundSize: 'cover',
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'center',
 	flexDirection: 'column',
+	padding: '3rem  0',
 });
-
-const LoginText = styled.p(({ theme }) => ({
-	fontSize: '1.6rem',
-	color: theme.colors.violet,
-	fontWeight: '500',
-	marginTop: '3rem',
-}));
-
-const LinkText = styled(Link)(({ theme }) => ({
-	color: theme.colors.secondary,
-	fontWeight: '800',
-	fontSize: '1.6rem',
-	fontFamily: 'sans-serif',
-	marginLeft: '0.6rem',
-	textDecoration: 'none',
-}));
 
 export default Register;

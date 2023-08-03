@@ -1,16 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import OtpInput from 'react-otp-input';
 import './style.css';
-import { css, styled, useTheme } from 'styled-components';
+import { styled, useTheme } from 'styled-components';
 import { Button } from '../../atoms/Button';
+import { verifyOtp } from '../../../store/controllers';
 
-const TIMER = 11;
+const TIMER = 100;
+const OTP_LENGTH = 4;
 
-export const Otp = () => {
+interface OtpProps {
+	email: string;
+	handleNext: () => void;
+	handlePrev: () => void;
+}
+
+export const Otp: React.FC<OtpProps> = ({ email, handleNext, handlePrev }) => {
 	const theme = useTheme();
 	const [otp, setOtp] = useState('');
-	const [timer, setTimer] = useState(TIMER);
+	const [timer, setTimer] = useState<number>(TIMER);
 	const [enableTimer, setEnableTimer] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if (timer === 0) {
@@ -22,14 +31,35 @@ export const Otp = () => {
 		}
 	}, [timer]);
 
+	const handleVerify = useCallback(async () => {
+		if (otp.length === OTP_LENGTH) {
+			try {
+				setIsLoading(true);
+				const res = await verifyOtp({ emailId: email, otp });
+				if (res?.status === 200) {
+					handleNext();
+				}
+				setOtp('');
+			} finally {
+				setIsLoading(false);
+			}
+		}
+	}, [otp, email]);
+
+	const resendOtp = useCallback(() => {
+		setTimer(TIMER);
+		setEnableTimer(true);
+	}, []);
+
 	return (
-		<>
+		<Container>
+			<OtpSentText>{`OTP has been sent to your email  \n ${email}`}</OtpSentText>
 			<OtpInput
 				inputStyle={inputStyles}
 				value={otp}
 				renderSeparator={() => <Seperation />}
 				onChange={setOtp}
-				numInputs={4}
+				numInputs={OTP_LENGTH}
 				renderInput={(props) => <input {...props} className='otp-input' />}
 			/>
 			{enableTimer ? (
@@ -42,24 +72,47 @@ export const Otp = () => {
 					backgroundColor={theme.colors.background2}
 					className='m-2'
 					text={'resend'}
-					onClick={() => console.log('back')}
+					onClick={resendOtp}
 				/>
 			)}
 			<ButtonWrapper>
 				<Button
 					backgroundColor={theme.colors.violet}
 					text={'back'}
-					onClick={() => console.log('back')}
+					onClick={handlePrev}
 				/>
-				<Button text={'verify'} onClick={() => console.log('back')} />
+				<Button
+					text={'verify'}
+					onClick={handleVerify}
+					disabled={otp.length !== OTP_LENGTH}
+					isLoading={isLoading}
+				/>
 			</ButtonWrapper>
-		</>
+		</Container>
 	);
 };
+
+const Container = styled.div({
+	padding: '1rem 3rem',
+	display: 'flex',
+	alignItems: 'center',
+	flexDirection: 'column',
+	width: 'max-content',
+});
 
 const Seperation = styled.div({
 	width: '2.5rem',
 });
+
+const OtpSentText = styled.p(({ theme }) => ({
+	fontSize: '1.6rem',
+	margin: '2rem 0',
+	fontWeight: '700',
+	textAlign: 'center',
+	maxWidth: '30rem',
+	color: theme.colors.dark,
+	opacity: 0.77,
+}));
 
 const inputStyles = {
 	width: '3.5rem',
@@ -73,7 +126,8 @@ const inputStyles = {
 };
 
 const ResendText = styled.p(({ theme }) => ({
-	margin: '2.5rem 0',
+	marginTop: '1rem',
+	marginBottom: '4rem',
 	fontSize: '1.4rem',
 	color: theme.colors.violet,
 }));
@@ -88,5 +142,5 @@ const ButtonWrapper = styled.div(() => ({
 	display: 'flex',
 	marginTop: '2rem',
 	justifyContent: 'space-between',
-	width: '75%',
+	width: '20rem',
 }));

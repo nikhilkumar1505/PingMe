@@ -5,3 +5,8 @@ export * from './atoms/Button';
 export * from './organisim/ForgotPasswordEmail';
 export * from './organisim/ResetPassword';
 export * from './molecules/Otp';
+export * from './organisim/Signup';
+export * from './atoms/ActivityLoader';
+export * from './atoms/Avatar';
+export * from './organisim/Modal';
+export * from './molecules/AvatarBox';

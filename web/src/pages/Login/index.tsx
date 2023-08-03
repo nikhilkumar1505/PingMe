@@ -1,29 +1,40 @@
-import { useFormik } from 'formik';
-import React from 'react';
+import { Form, useFormik } from 'formik';
+import React, { useState } from 'react';
 import { Logo, GlassMorphis, TextInput, Button } from '../../components';
 import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import backgroundImage from '../../assets/Images/bg1.png';
+import { LoginSchema } from '../../utils/validation';
+import { login } from '../../store/controllers';
 
 const Login = () => {
+	const [loading, setLoading] = useState(false);
 	const loginFormik = useFormik({
 		initialValues: {
 			username: '',
 			password: '',
 		},
-		onSubmit: () => console.log('submited'),
+		validationSchema: LoginSchema,
+		validateOnBlur: true,
+		validateOnChange: false,
+		onSubmit: (value) => {
+			setLoading(true);
+			login(value).finally(() => setLoading(false));
+		},
 	});
+
 	return (
 		<Container>
 			<Logo />
 			<GlassMorphis title={'Login'}>
-				<form onSubmit={loginFormik.submitForm}>
+				<form onSubmit={loginFormik.handleSubmit}>
 					<TextInput
 						value={loginFormik.values.username}
 						type='text'
 						name='username'
 						placeholder='username'
 						onChange={loginFormik.handleChange}
+						error={loginFormik.errors.username}
 					/>
 					<TextInput
 						value={loginFormik.values.password}
@@ -31,12 +42,14 @@ const Login = () => {
 						name='password'
 						placeholder='password'
 						onChange={loginFormik.handleChange}
+						error={loginFormik.errors.password}
 					/>
 					<Button
 						text='Login'
-						onClick={() => console.log('clicekd')}
+						onClick={loginFormik.handleSubmit}
 						className='login-style'
 						type='submit'
+						isLoading={loading}
 					/>
 					<ForgotTextContainer>
 						<ForgotText to='/forgot-password'>Forgot Password?</ForgotText>

@@ -1,22 +1,28 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Chat, ForgotPassword, Login, Register } from './pages/';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './utils/theme';
+import ProtectedRoute from './routes/ProtectedRoute';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 	return (
-		<ThemeProvider theme={theme}>
-			<BrowserRouter>
-				<Routes>
-					<Route path='/' element={<Chat />} />
-					<Route path='/login' element={<Login />} />
-					<Route path='/register' element={<Register />} />
-					<Route path='/forgot-password' element={<ForgotPassword />} />
-				</Routes>
-			</BrowserRouter>
-		</ThemeProvider>
+		<Provider store={store}>
+			<ThemeProvider theme={theme}>
+				<BrowserRouter>
+					<ToastContainer
+						theme='colored'
+						className={'toastify'}
+						autoClose={3000}
+					/>
+					<ProtectedRoute />
+				</BrowserRouter>
+			</ThemeProvider>
+		</Provider>
 	);
 }
 

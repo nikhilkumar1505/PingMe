@@ -1,3 +1,25 @@
 .m-2 {
 	margin: 2rem 0;
 }
+
+.toastify {
+	font-size: 2rem;
+}
+.Toastify__toast-body {
+	font-size: 2rem;
+}
+
+html {
+	scrollbar-width: none; /* 'none' to completely hide scrollbar, 'thin' to make it narrower */
+}
+
+::-webkit-scrollbar {
+	width: 0;
+}
+
+.close-icon {
+	position: absolute;
+	top: 2rem;
+	right: 2rem;
+	cursor: pointer;
+}

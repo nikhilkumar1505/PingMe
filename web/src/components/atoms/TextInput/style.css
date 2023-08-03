@@ -10,3 +10,9 @@
 	text-transform: uppercase;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.password-icon {
+	margin-right: 1rem;
+	position: absolute;
+	right: 0;
+	cursor: pointer;
+}

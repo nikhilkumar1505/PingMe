@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import './style.css';
+import { ActivityLoader } from '../ActivityLoader';
 
 interface Ibutton {
 	text: string;
-	onClick: () => void;
+	onClick: (e?: any) => void;
 	className?: string;
 	backgroundColor?: string;
 	color?: string;
 	disabled?: boolean;
 	type?: 'button' | 'submit' | 'reset';
+	Placeholder?: () => JSX.Element;
+	isLoading?: boolean;
 }
 
 export const Button: React.FC<Ibutton> = ({
@@ -20,16 +23,23 @@ export const Button: React.FC<Ibutton> = ({
 	color,
 	disabled = false,
 	type = 'button',
+	Placeholder,
+	isLoading = false,
 }) => {
+	const LoadingComponent = useMemo(() => {
+		return Placeholder ? Placeholder : ActivityLoader;
+	}, [Placeholder]);
+
+	const btnDisabled = isLoading || disabled;
 	return (
 		<PMbutton
-			className={`${className} ${!disabled ? 'main-button' : ''}`}
+			className={`${className} ${!btnDisabled ? 'main-button' : ''}`}
 			onClick={onClick}
-			disabled={disabled}
+			disabled={btnDisabled}
 			color={color}
 			type={type}
 			backgroundColor={backgroundColor}>
-			{text}
+			{isLoading ? <LoadingComponent /> : text}
 		</PMbutton>
 	);
 };
@@ -49,6 +59,6 @@ const PMbutton = styled.button<PMbuttonProps>(
 		fontSize: '1.4rem',
 		textTransform: 'uppercase',
 		letterSpacing: '0.15rem',
-		borderRadius: '2rem',
+		borderRadius: '1rem',
 	})
 );
