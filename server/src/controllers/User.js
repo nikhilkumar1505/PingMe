@@ -136,3 +136,17 @@ export const changePassword = async (req, res, next) => {
 		next(err);
 	}
 };
+
+export const checkEmailExists = async (req, res, next) => {
+	try {
+		const result = validationResult(req);
+		if (!result.isEmpty()) {
+			res.status(400).send({ message: result.errors });
+		}
+		const { emailId } = req.body;
+		const emailCheck = await User.findOne({ emailId });
+		res.status(200).send({ exists: !!emailCheck });
+	} catch (err) {
+		next(err);
+	}
+};

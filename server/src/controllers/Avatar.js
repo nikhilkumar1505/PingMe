@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 export const getAllAvatars = async (req, res, next) => {
 	try {
 		const avatars = await Avatar.find();
-		res.status(200).json(avatars);
+		res.status(200).json({ data: avatars });
 	} catch (err) {
 		next(err);
 	}

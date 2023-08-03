@@ -5,6 +5,7 @@ import {
 	login,
 	register,
 	sendOtp,
+	checkEmailExists,
 	verifyOtp,
 } from '../controllers/User.js';
 
@@ -20,7 +21,7 @@ const routes = express.Router();
 routes.post('/login', [username, password], login);
 
 routes.post(
-	'/signup',
+	'/register',
 	[username, password, emailId, fullName, avatarId],
 	register
 );
@@ -31,4 +32,5 @@ routes.post('/verify-otp', [emailId, otp], verifyOtp);
 
 routes.post('/forgot-password', [password], changePassword);
 
+routes.post('/check-email', [emailId], checkEmailExists);
 export default routes;

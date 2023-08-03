@@ -28,7 +28,7 @@ const Userschema = new mongoose.Schema(
 		},
 		avatar: { type: Schema.Types.ObjectId, default: null, ref: 'Avatar' },
 	},
-	{ timestamps: true }
+	{ timestamps: true, versionKey: false }
 );
 
 export default mongoose.model('User', Userschema);
