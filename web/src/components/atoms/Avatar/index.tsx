@@ -18,8 +18,8 @@ const Avatar: React.FC<AvatarProp> = ({
 	handleIconClick,
 }) => {
 	return (
-		<AvatarContainer size={size} color={color}>
-			<AvatarImage size={size} src={imageUrl} alt='' />
+		<AvatarContainer size={size}>
+			<AvatarImage size={size} color={color} src={imageUrl} alt='' />
 			{showIcon && (
 				<EditIcon onClick={handleIconClick}>
 					<TbColorPicker size={15} color='white' />
@@ -46,17 +46,13 @@ const AvatarContainer = styled.div<AvatarContainerProp>(({ size }) => ({
 
 const AvatarImage = styled.img<AvatarContainerProp>(
 	({ size, theme, color }) => ({
-		width: size ?? '6rem',
-		height: size ?? '6rem',
+		width: size ?? '10rem',
+		height: size ?? '10rem',
 		borderRadius: '50%',
 		objectFit: 'cover',
 		borderColor: color ?? theme.colors.primary,
 		borderWidth: '0.3rem',
 		borderStyle: 'solid',
-		[`@media(${theme.devices.laptop})`]: {
-			width: size ?? '10rem',
-			height: size ?? '10rem',
-		},
 	})
 );
 

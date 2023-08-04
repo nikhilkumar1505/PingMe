@@ -5,6 +5,7 @@ const colors = {
 	background2: '#00407177',
 	background3: '#F1F1F1',
 	background4: '#658FFF',
+	background5: '#C0C0C0',
 	white: '#ffffff',
 	dark: '#151515',
 	glassMorph: '#ffffff24',
