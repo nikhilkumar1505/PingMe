@@ -8,12 +8,16 @@ interface ChatListHeaderProp {
 	Icon: IconType;
 	imageUrl?: string;
 	handleIconClick: () => void;
+	title?: string;
+	subTitle?: string;
 }
 
 export const ChatListHeader: React.FC<ChatListHeaderProp> = ({
 	Icon,
 	imageUrl,
 	handleIconClick,
+	title,
+	subTitle,
 }) => {
 	const theme = useTheme();
 
@@ -22,8 +26,8 @@ export const ChatListHeader: React.FC<ChatListHeaderProp> = ({
 			<AvatarTextContainer>
 				<Avatar imageUrl={imageUrl} size='5rem' color='transparent' />
 				<TextContainer>
-					<FullNameText>Nikhil Kumar</FullNameText>
-					<UsernameText>nikhil1510</UsernameText>
+					<FullNameText>{title}</FullNameText>
+					<UsernameText>{subTitle}</UsernameText>
 				</TextContainer>
 			</AvatarTextContainer>
 			<HeaderIcon onClick={handleIconClick}>

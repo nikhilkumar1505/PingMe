@@ -43,6 +43,7 @@ const Login = () => {
 						placeholder='password'
 						onChange={loginFormik.handleChange}
 						error={loginFormik.errors.password}
+						passwordType
 					/>
 					<Button
 						text='Login'

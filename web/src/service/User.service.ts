@@ -9,4 +9,10 @@ export class UserSerivces {
 			url: apiConfig.AVATAR,
 		});
 	};
+	static getDetails = () => {
+		return NetworkManager.getInstance().appRequest({
+			method: HttpMethod.GET,
+			url: apiConfig.GET_DETAILS,
+		});
+	};
 }

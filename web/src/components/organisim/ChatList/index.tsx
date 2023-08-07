@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { ChatBox, ChatListHeader, SearchInput } from '../..';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { IoSettings, IoChatbox } from 'react-icons/io5';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
 
 export const ChatList = () => {
 	const [isSettingIcon, setIsSettingIcon] = useState(true);
-	const avatars = useAppSelector((state) => state.app.avatars) || [];
+	const userdetails = useAppSelector((state) => state.user);
 	const Icon = isSettingIcon ? IoSettings : IoChatbox;
 	const [search, setSearch] = useState('');
 
@@ -19,7 +20,9 @@ export const ChatList = () => {
 			<ChatListHeader
 				handleIconClick={handleIconClick}
 				Icon={Icon}
-				imageUrl={avatars[2]?.image_url}
+				imageUrl={userdetails?.imageUrl}
+				title={userdetails?.fullName}
+				subTitle={userdetails?.username}
 			/>
 			<Scrollable>
 				<SearchInput
@@ -30,7 +33,7 @@ export const ChatList = () => {
 					{[...Array(10)].map((item, index) => {
 						return (
 							<ChatBox
-								imageUrl={avatars[5]?.image_url}
+								imageUrl={userdetails?.imageUrl}
 								lastIndex={index !== 9}
 								key={index}
 							/>

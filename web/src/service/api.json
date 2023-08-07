@@ -6,5 +6,6 @@
 	"CHECK_EMAIL": "auth/check-email",
 	"SEND_OTP": "auth/send-otp",
 	"VERIFY_OTP": "/auth/verify-otp",
-	"AVATAR": "avatar"
+	"AVATAR": "avatar",
+	"GET_DETAILS": "user/details"
 }

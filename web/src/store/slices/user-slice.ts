@@ -6,6 +6,8 @@ const initialState: Iuser = {
 	username: '',
 	fullName: '',
 	emailId: '',
+	imageUrl: '',
+	userId: '',
 };
 
 const userState = createSlice({

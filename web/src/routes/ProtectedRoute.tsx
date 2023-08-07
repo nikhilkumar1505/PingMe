@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import AppRoute from './AppRoute';
 import AuthRoute from './AuthRoute';
 import { useAppSelector } from '../hooks/useAppSelector';
-import { getAvatars } from '../store/controllers/User.controller';
+import { getAvatars, getDetails } from '../store/controllers/User.controller';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { getToken } from '../utils/user';
-import { updateLoggedIn } from '../store/slices';
+import { updateLoading, updateLoggedIn } from '../store/slices';
 import PageLoader from '../components/organisim/PageLoader';
 
 const ProtectedRoute = () => {
@@ -14,9 +14,21 @@ const ProtectedRoute = () => {
 	const token = getToken();
 	const dispatch = useAppDispatch();
 
+	const loadUserContents = useCallback(async () => {
+		try {
+			dispatch(updateLoading(true));
+			await getDetails();
+		} finally {
+			setTimeout(() => {
+				dispatch(updateLoading(false));
+			}, 2500);
+			dispatch(updateLoggedIn(true));
+		}
+	}, []);
+
 	useEffect(() => {
 		if (token) {
-			dispatch(updateLoggedIn(true));
+			loadUserContents();
 		} else {
 			dispatch(updateLoggedIn(false));
 		}

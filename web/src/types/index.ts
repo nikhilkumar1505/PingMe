@@ -9,6 +9,8 @@ export interface Iuser {
 	username: string;
 	fullName: string;
 	emailId: string;
+	imageUrl: string;
+	userId: string;
 }
 
 export interface loginProp {
