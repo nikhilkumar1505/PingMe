@@ -3,6 +3,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import AvatarRoutes from './routes/Avatar.js';
 import AuthRoutes from './routes/Auth.js';
+import FriendRoutes from './routes/Friend.js';
+import UserRoutes from './routes/User.js';
+import { isAuth } from './middleware/auth.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -16,9 +19,11 @@ app.use(express.json());
 
 app.use('/avatar', AvatarRoutes);
 app.use('/auth', AuthRoutes);
+app.use('/friend', FriendRoutes);
+app.use('/user', isAuth, UserRoutes);
 
 app.use((error, req, res, next) => {
-	console.log(error);
+	console.log('errr===>', error);
 	const status = error.statusCode || 500;
 	const message = error.message;
 	const data = error.data;

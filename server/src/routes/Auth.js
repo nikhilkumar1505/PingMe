@@ -7,7 +7,7 @@ import {
 	sendOtp,
 	checkEmailExists,
 	verifyOtp,
-} from '../controllers/User.js';
+} from '../controllers/Auth.js';
 
 const username = body('username').notEmpty();
 const emailId = body('emailId').isEmail().normalizeEmail();
