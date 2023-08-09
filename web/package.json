@@ -14,6 +14,7 @@
 		"axios": "^1.4.0",
 		"formik": "^2.4.2",
 		"react": "^18.2.0",
+		"react-animated-modal": "^1.1.1",
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.10.1",
 		"react-modal": "^3.16.1",
@@ -58,6 +59,7 @@
 		"styled-components": "^5"
 	},
 	"devDependencies": {
+		"@types/react-animated-modal": "^1.1.1",
 		"@types/react-modal": "^3.16.0",
 		"redux-devtools-extension": "^2.13.9"
 	}

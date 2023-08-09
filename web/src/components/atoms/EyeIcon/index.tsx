@@ -17,7 +17,7 @@ export const EyeIcon: React.FC<EyeIconProp> = ({
 
 	return (
 		<div onClick={handleClick}>
-			<Icon size={15} />
+			<Icon size={15} color={'white'} />
 		</div>
 	);
 };

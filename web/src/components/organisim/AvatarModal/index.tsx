@@ -35,6 +35,7 @@ export const AvatarModal: React.FC<AvatarProps> = ({ isOpen, handleClose }) => {
 				color={theme.colors.dark}
 				className='close-icon'
 				size={20}
+				title={'close'}
 			/>
 			<Container>
 				{avatars.length &&
@@ -66,10 +67,6 @@ const TitleCloseWrapper = styled.div(() => ({
 	position: 'relative',
 	margin: '2rem 0 2rem',
 }));
-
-const closeIconStyle = {
-	position: 'absolute',
-};
 
 const ModalTitle = styled.h2(({ theme }) => ({
 	textAlign: 'center',

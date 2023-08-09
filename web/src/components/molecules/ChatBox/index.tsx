@@ -5,21 +5,28 @@ import { Avatar } from '../../atoms/Avatar';
 interface ChatBoxProp {
 	imageUrl: string;
 	lastIndex: boolean;
+	title: string;
+	description: string;
+	timer?: string;
 }
 
-export const ChatBox: React.FC<ChatBoxProp> = ({ imageUrl, lastIndex }) => {
+export const ChatBox: React.FC<ChatBoxProp> = ({
+	imageUrl,
+	lastIndex,
+	title,
+	description,
+	timer,
+}) => {
 	return (
 		<ChatListBox lastIndex={lastIndex}>
 			<Avatar imageUrl={imageUrl} size='5rem' color='transparent' />
 			<NameTextWrapper>
 				<NameTimeWrapper>
-					<UserFullName>Dhurva Rambahahahaho just to check</UserFullName>
-					<Timer>11.30 AM </Timer>
+					<UserFullName>{title}</UserFullName>
+					{timer && <Timer>{timer}</Timer>}
 				</NameTimeWrapper>
 				<TextIconWrapper>
-					<LastText>
-						this is text which was sent by dhruva which is long
-					</LastText>
+					<LastText>{description}</LastText>
 				</TextIconWrapper>
 			</NameTextWrapper>
 		</ChatListBox>

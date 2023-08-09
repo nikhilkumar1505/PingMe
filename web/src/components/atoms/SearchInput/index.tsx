@@ -29,11 +29,11 @@ const InputContainer = styled.div(({ theme }) => ({
 	alignItems: 'center',
 	height: '3rem',
 	borderRadius: '2rem',
-	width: '28rem',
+	width: '30rem',
 	backgroundColor: theme.colors.white,
-	margin: '0rem 2.5rem',
-	marginTop: '1rem',
 	paddingLeft: '1.5rem',
+	margin: 'auto',
+	marginTop: '1rem',
 }));
 
 const Input = styled.input(({ theme }) => ({

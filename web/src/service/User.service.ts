@@ -15,4 +15,11 @@ export class UserSerivces {
 			url: apiConfig.GET_DETAILS,
 		});
 	};
+	static searchUser = ({ searchTerm }: { searchTerm: string }) => {
+		return NetworkManager.getInstance().appRequest({
+			method: HttpMethod.GET,
+			url: apiConfig.SEARCH,
+			params: { searchTerm },
+		});
+	};
 }

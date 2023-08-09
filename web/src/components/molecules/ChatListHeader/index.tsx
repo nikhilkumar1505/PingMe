@@ -1,83 +1,62 @@
-import React from 'react';
-import styled, { useTheme } from 'styled-components';
-import { Avatar } from '../../atoms/Avatar';
-import { Header } from '../..';
-import { IconType } from 'react-icons';
+import React, { useState, useCallback } from 'react';
+import { CommonModal, Header, HeaderIcon } from '../..';
+import { useAppSelector } from '../../../hooks/useAppSelector';
+import { IoChatbox } from 'react-icons/io5';
+import { BiSearchAlt, BiLogOut } from 'react-icons/bi';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { updateDrawerState, updateLoggedIn } from '../../../store/slices';
+import { drawerState } from '../../../types';
+import { useNavigate } from 'react-router-dom';
 
-interface ChatListHeaderProp {
-	Icon: IconType;
-	imageUrl?: string;
-	handleIconClick: () => void;
-	title?: string;
-	subTitle?: string;
-}
+interface ChatListHeaderProp {}
 
-export const ChatListHeader: React.FC<ChatListHeaderProp> = ({
-	Icon,
-	imageUrl,
-	handleIconClick,
-	title,
-	subTitle,
-}) => {
-	const theme = useTheme();
+export const ChatListHeader: React.FC<ChatListHeaderProp> = ({}) => {
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	const [openModal, setOpenModal] = useState(false);
+	const userdetails = useAppSelector((state) => state.user);
+	const drawer = useAppSelector((state) => state.app.drawerState);
+	const Icon = drawer === drawerState.CHAT ? BiSearchAlt : IoChatbox;
+	const state =
+		drawer === drawerState.CHAT ? drawerState.SEARCH : drawerState.CHAT;
+
+	const handleIconClick = useCallback(() => {
+		dispatch(updateDrawerState(state));
+	}, [state]);
+
+	const handlelogout = useCallback(() => {
+		localStorage.clear();
+		dispatch(updateLoggedIn(false));
+		navigate('/');
+	}, []);
 
 	return (
-		<Header>
-			<AvatarTextContainer>
-				<Avatar imageUrl={imageUrl} size='5rem' color='transparent' />
-				<TextContainer>
-					<FullNameText>{title}</FullNameText>
-					<UsernameText>{subTitle}</UsernameText>
-				</TextContainer>
-			</AvatarTextContainer>
-			<HeaderIcon onClick={handleIconClick}>
-				<Icon size={20} color={theme.colors.white} />
-			</HeaderIcon>
-		</Header>
+		<>
+			<Header
+				imageUrl={userdetails?.imageUrl}
+				title={userdetails?.fullName}
+				subTitle={userdetails?.username}>
+				<HeaderIcon
+					Icon={Icon}
+					handleIconClick={handleIconClick}
+					title={state}
+				/>
+				<HeaderIcon
+					Icon={BiLogOut}
+					handleIconClick={() => setOpenModal(true)}
+					title={'logout'}
+				/>
+			</Header>
+			<CommonModal
+				visible={openModal}
+				descrption='Are you sure you want to logout?'
+				title={'Logout'}
+				imageUrl='https://drawer.design/wp-content/uploads/2020/12/Illustration.png'
+				secondaryBtntext='back'
+				secondaryBtnOnClick={() => setOpenModal(false)}
+				primaryBtnOnClick={handlelogout}
+				primaryBtnText='Logout'
+			/>
+		</>
 	);
 };
-
-const AvatarTextContainer = styled.div(({ theme }) => ({
-	display: 'flex',
-	alignItems: 'center',
-	width: '90%',
-}));
-
-const FullNameText = styled.p(({ theme }) => ({
-	fontSize: '1.3rem',
-	maxWidth: '15rem',
-	fontWeight: '600',
-	color: theme.colors.white,
-	textTransform: 'uppercase',
-	fontFamily: 'sans-serif',
-	letterSpacing: '1.5px',
-	textOverflow: 'ellipsis',
-	whiteSpace: 'nowrap',
-	overflow: 'hidden',
-}));
-
-const UsernameText = styled.p(({ theme }) => ({
-	fontSize: '1rem',
-	maxWidth: '15rem',
-	color: theme.colors.white,
-	fontStyle: 'italic',
-	opacity: 0.8,
-	textOverflow: 'ellipsis',
-	whiteSpace: 'nowrap',
-	overflow: 'hidden',
-}));
-
-const TextContainer = styled.div(() => ({
-	marginTop: '0.2rem',
-	marginLeft: '0.5rem',
-}));
-
-const HeaderIcon = styled.div(({ theme }) => ({
-	borderRadius: '50%',
-	borderWidth: '1px',
-	padding: '0.5rem',
-	cursor: 'pointer',
-	['&:hover']: {
-		backgroundColor: theme.colors.background2,
-	},
-}));

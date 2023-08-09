@@ -30,3 +30,22 @@ export const getDetails = async () => {
 		}
 	} catch {}
 };
+
+export const searchUser = async (search: string) => {
+	try {
+		const res = await UserSerivces.searchUser({ searchTerm: search });
+		if (res.status === 200) {
+			return [...res.data?.data].map((data) => ({
+				userId: data._id,
+				username: data.username,
+				fullName: data.fullName,
+				imageUrl: data.avatar?.image_url,
+				emailId: data.emailId,
+				avatarId: data.avatar._id,
+			}));
+		}
+		return [];
+	} catch {
+		return [];
+	}
+};

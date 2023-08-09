@@ -35,3 +35,9 @@ export interface forgetPasswordProp {
 	password: string;
 	emailId: string;
 }
+
+export enum drawerState {
+	CHAT = 'chat',
+	SEARCH = 'search',
+	PROFILE = 'profile',
+}

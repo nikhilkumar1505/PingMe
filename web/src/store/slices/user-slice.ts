@@ -10,7 +10,7 @@ const initialState: Iuser = {
 	userId: '',
 };
 
-const userState = createSlice({
+const userSlice = createSlice({
 	initialState,
 	name: 'user',
 	reducers: {
@@ -25,6 +25,6 @@ const userState = createSlice({
 	},
 });
 
-export const { updateValue, resetprofile, replaceProfile } = userState.actions;
+export const { updateValue, resetprofile, replaceProfile } = userSlice.actions;
 
-export default userState.reducer;
+export default userSlice.reducer;

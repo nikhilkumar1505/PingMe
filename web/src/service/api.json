@@ -7,5 +7,6 @@
 	"SEND_OTP": "auth/send-otp",
 	"VERIFY_OTP": "/auth/verify-otp",
 	"AVATAR": "avatar",
-	"GET_DETAILS": "user/details"
+	"GET_DETAILS": "user/details",
+	"SEARCH": "user/search"
 }
