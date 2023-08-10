@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Avatar } from '../../atoms/Avatar';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
 interface ChatBoxProp {
 	imageUrl: string;
@@ -8,6 +9,8 @@ interface ChatBoxProp {
 	title: string;
 	description: string;
 	timer?: string;
+	handleClick?: (value?: any) => void;
+	id?: string;
 }
 
 export const ChatBox: React.FC<ChatBoxProp> = ({
@@ -16,9 +19,15 @@ export const ChatBox: React.FC<ChatBoxProp> = ({
 	title,
 	description,
 	timer,
+	handleClick,
+	id,
 }) => {
+	const selectedChat = useAppSelector((state) => state.chat.selectedChat);
 	return (
-		<ChatListBox lastIndex={lastIndex}>
+		<ChatListBox
+			lastIndex={lastIndex}
+			onClick={handleClick}
+			selectedCard={!!(selectedChat?.userId && selectedChat?.userId === id)}>
 			<Avatar imageUrl={imageUrl} size='5rem' color='transparent' />
 			<NameTextWrapper>
 				<NameTimeWrapper>
@@ -75,16 +84,22 @@ const Timer = styled.p(() => ({
 
 interface ChatListProp {
 	lastIndex: boolean;
+	selectedCard: boolean;
 }
 
-const ChatListBox = styled.div<ChatListProp>(({ theme, lastIndex }) => ({
-	padding: '1rem 0.7rem',
-	borderBottom: lastIndex ? `1px solid ${theme.colors.background2}` : '',
-	display: 'flex',
-	alignItems: 'center',
-	maxWidth: '35rem',
-	cursor: 'pointer',
-	['&:hover']: {
-		backgroundColor: theme.colors.background5,
-	},
-}));
+const ChatListBox = styled.div<ChatListProp>(
+	({ theme, lastIndex, selectedCard }) => ({
+		padding: '1rem 0.7rem',
+		borderBottom: lastIndex ? `1px solid ${theme.colors.background2}` : '',
+		display: 'flex',
+		alignItems: 'center',
+		maxWidth: '35rem',
+		cursor: 'pointer',
+		backgroundColor: selectedCard ? theme.colors.background2 : 'transparent',
+		['&:hover']: {
+			backgroundColor: selectedCard
+				? theme.colors.background2
+				: theme.colors.background5,
+		},
+	})
+);

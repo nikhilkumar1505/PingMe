@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import Modal from 'react-modal';
 import styled, { useTheme } from 'styled-components';
 import { Button } from '../..';

@@ -11,6 +11,7 @@ const colors = {
 	glassMorph: '#ffffff24',
 	error: '#B00020',
 	violet: '#604bff',
+	textColor: '#0C2146',
 };
 
 const sizes = {

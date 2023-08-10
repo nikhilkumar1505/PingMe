@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { UserSerivces } from '../../service/User.service';
 import { Iuser } from '../../types';
 import { replaceProfile, storeAvatars } from '../slices';
@@ -8,6 +9,15 @@ export const getAvatars = async () => {
 		const res = await UserSerivces.getAvatar();
 		if (res?.data) {
 			store.dispatch(storeAvatars(res.data.data));
+		}
+	} catch (err) {}
+};
+
+export const updateAvatar = async (avatarId: string) => {
+	try {
+		const res = await UserSerivces.updateAvatar({ avatarId });
+		if (res.status === 201) {
+			toast.success(res.data.message);
 		}
 	} catch (err) {}
 };

@@ -29,7 +29,10 @@ export const searchFriends = asyncHandler(async (req, res) => {
 	}
 	const { searchTerm } = req.query;
 	const users = await User.find(
-		{ $text: { $search: searchTerm.trim(), $caseSensitive: false } },
+		{
+			$text: { $search: searchTerm.trim(), $caseSensitive: false },
+			_id: { $ne: req.user._id },
+		},
 		{ score: { $meta: 'textScore' }, password: 0 }
 	)
 		.sort({ score: { $meta: 'textScore' } })
@@ -37,4 +40,22 @@ export const searchFriends = asyncHandler(async (req, res) => {
 		.limit(10);
 
 	res.status(200).send({ message: 'found users', data: users });
+});
+
+export const updateAvatar = asyncHandler(async (req, res) => {
+	const result = validationResult(req);
+	if (!result.isEmpty()) {
+		res.status(400).send({ message: result.errors });
+	}
+
+	const userId = req.user._id;
+	if (req.body.avatarId?.toString() !== req.user.avatar?.toString()) {
+		const savedUser = await User.findByIdAndUpdate(userId, {
+			avatar: req.body.avatarId,
+		});
+		if (savedUser) {
+			res.status(201).send({ message: 'Avatar updated Successfully!' });
+		}
+	}
+	res.status(200).send({ message: 'same avatar' });
 });

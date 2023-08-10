@@ -4,6 +4,8 @@ import { ChatBox, EmptyResult, SearchInput, Shimmer } from '../..';
 import { useState } from 'react';
 import { searchUser } from '../../../store/controllers';
 import { Iuser } from '../../../types';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { updateSelectedChats } from '../../../store/slices';
 
 const emptyResult = {
 	first: {
@@ -11,7 +13,7 @@ const emptyResult = {
 		title: 'Search New Friends',
 	},
 	second: {
-		url: 'https://img.freepik.com/free-vector/file-searching-concept-illustration_114360-4125.jpg?size=626&ext=jpg&ga=GA1.2.304103842.1690276064&semt=ais',
+		url: 'https://img.freepik.com/free-vector/curious-concept-illustration_114360-2185.jpg?size=626&ext=jpg&ga=GA1.2.304103842.1690276064&semt=ais',
 		title: 'No User Found',
 	},
 };
@@ -21,6 +23,7 @@ export const SearchList = () => {
 	const [loading, setLoading] = useState(false);
 	const [users, setUsers] = useState<Iuser[] | []>([]);
 	const timer = useRef<NodeJS.Timeout | null>(null);
+	const dispatch = useAppDispatch();
 
 	const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
@@ -34,6 +37,10 @@ export const SearchList = () => {
 				.then((res) => setUsers(res))
 				.finally(() => setLoading(false));
 		}, 500);
+	}, []);
+
+	const handleCardClick = useCallback((item: any) => {
+		dispatch(updateSelectedChats(item));
 	}, []);
 
 	const Body = useCallback(() => {
@@ -57,9 +64,11 @@ export const SearchList = () => {
 						<ChatBox
 							imageUrl={item.imageUrl}
 							lastIndex={index !== 9}
-							key={index}
+							key={item.userId}
 							title={item.fullName}
 							description={item.username}
+							handleClick={() => handleCardClick(item)}
+							id={item.userId}
 						/>
 					))}
 				</>

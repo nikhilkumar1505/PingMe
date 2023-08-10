@@ -22,4 +22,11 @@ export class UserSerivces {
 			params: { searchTerm },
 		});
 	};
+	static updateAvatar = ({ avatarId }: { avatarId: string }) => {
+		return NetworkManager.getInstance().appRequest({
+			method: HttpMethod.POST,
+			url: apiConfig.UPDATE_AVATAR,
+			data: { avatarId },
+		});
+	};
 }

@@ -8,5 +8,6 @@
 	"VERIFY_OTP": "/auth/verify-otp",
 	"AVATAR": "avatar",
 	"GET_DETAILS": "user/details",
-	"SEARCH": "user/search"
+	"SEARCH": "user/search",
+	"UPDATE_AVATAR": "user/updateAvatar"
 }

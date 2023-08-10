@@ -13,8 +13,8 @@ export const ChatList = () => {
 				return <ConversationList />;
 			case drawerState.SEARCH:
 				return <SearchList />;
-			case drawerState.PROFILE:
-				return <></>;
+			default:
+				return <ConversationList />;
 		}
 	}, [drawer]);
 

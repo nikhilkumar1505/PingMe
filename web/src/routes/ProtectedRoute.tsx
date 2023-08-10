@@ -7,6 +7,7 @@ import { useAppDispatch } from '../hooks/useAppDispatch';
 import { getToken } from '../utils/user';
 import { updateLoading, updateLoggedIn } from '../store/slices';
 import PageLoader from '../components/organisim/PageLoader';
+import { redirect } from 'react-router-dom';
 
 const ProtectedRoute = () => {
 	const isSignedIn = useAppSelector((state) => state.app.isLoggedIn);
@@ -16,6 +17,7 @@ const ProtectedRoute = () => {
 
 	const loadUserContents = useCallback(async () => {
 		try {
+			redirect('/');
 			dispatch(updateLoading(true));
 			await getDetails();
 		} finally {

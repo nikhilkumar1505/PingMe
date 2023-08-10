@@ -8,6 +8,7 @@ import styled, { useTheme } from 'styled-components';
 import { updateValue } from '../../../store/slices';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { MdCancel } from 'react-icons/md';
+import { IAvatar } from '../../../types';
 
 interface AvatarProps {
 	isOpen: boolean;
@@ -21,8 +22,9 @@ export const AvatarModal: React.FC<AvatarProps> = ({ isOpen, handleClose }) => {
 	const dispatch = useAppDispatch();
 	const theme = useTheme();
 
-	const handleClick = useCallback((id: string) => {
-		dispatch(updateValue({ key: 'avatarId', value: id }));
+	const handleClick = useCallback((value: IAvatar) => {
+		dispatch(updateValue({ key: 'avatarId', value: value._id }));
+		dispatch(updateValue({ key: 'imageUrl', value: value.image_url }));
 	}, []);
 
 	return (
@@ -45,7 +47,7 @@ export const AvatarModal: React.FC<AvatarProps> = ({ isOpen, handleClose }) => {
 							selected={avatar?._id === avatrUrl?._id}
 							title={avatar.name}
 							key={avatar?._id}
-							handleClick={() => handleClick(avatar?._id)}
+							handleClick={() => handleClick(avatar)}
 						/>
 					))}
 			</Container>
@@ -85,5 +87,8 @@ const style = {
 		top: '40%',
 		left: '50%',
 		transform: 'translate(-50%, -40%)',
+	},
+	overlay: {
+		backgroundColor: '#000000aa',
 	},
 };

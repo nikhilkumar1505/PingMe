@@ -17,7 +17,7 @@ export const EmptyResult: React.FC<EmptyResultsProp> = ({
 	return (
 		<Container>
 			<CenterImage src={imageUrl} size={size} />
-			<CenterTitle>{title}</CenterTitle>
+			{title && <CenterTitle>{title}</CenterTitle>}
 			{children}
 		</Container>
 	);
@@ -35,7 +35,6 @@ const Container = styled.div(() => ({
 const CenterImage = styled.img<{ size?: string }>(({ size }) => ({
 	width: size ?? '25rem',
 	height: size ?? '25rem',
-	marginBottom: '1rem',
 	mixBlendMode: 'multiply',
 }));
 
@@ -45,4 +44,5 @@ const CenterTitle = styled.p(({ theme }) => ({
 	fontWeight: 'bold',
 	textAlign: 'center',
 	color: theme.colors.violet,
+	marginTop: '1rem',
 }));
