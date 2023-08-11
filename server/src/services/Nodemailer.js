@@ -11,16 +11,18 @@ const transport = nodemailer.createTransport({
 	},
 });
 
-export const sendMail = (emailId, otp) => {
+export const sendMail = async ({ emailId, text, html, subject }) => {
 	const info = {
 		from: process.env.EMAIL_ID,
 		to: emailId,
-		subject: 'PingMe - verification code',
-		text: `your one time password is ${otp}. please note this will expires in 5 minutes`,
-		html: `<p>your one time password is: <b>${otp}</b></p> <p>please note this will expires in 5 minutes</p>`,
+		subject,
+		text,
+		html,
 	};
-	return transport
-		.sendMail(info)
-		.then((res) => res)
-		.catch((err) => err);
+	try {
+		const res = await transport.sendMail(info);
+		return res;
+	} catch (err) {
+		return err;
+	}
 };

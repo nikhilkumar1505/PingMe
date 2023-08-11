@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import { body, param, query } from 'express-validator';
+import { body, query } from 'express-validator';
+import messageRoute from './Message.js';
+
 import {
 	getDetails,
 	searchFriends,
@@ -16,5 +18,7 @@ route.post(
 	[body('avatarId').notEmpty().isMongoId()],
 	updateAvatar
 );
+
+route.use('/message', messageRoute);
 
 export default route;

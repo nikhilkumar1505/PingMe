@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import Otp from '../models/Otp.js';
 import { getToken } from '../utils/Jwt.js';
 import { otpGenerator } from '../utils/OtpGenarator.js';
+import { formatVerificationPayload } from '../utils/mailHelper.js';
 import { sendMail } from '../services/Nodemailer.js';
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
@@ -68,8 +69,11 @@ export const sendOtp = async (req, res, next) => {
 		}
 
 		const { emailId } = req.body;
+		const user = await User.findOne({ emailId });
 		const otp = otpGenerator(4);
-		const mailed = await sendMail(emailId, otp);
+		const mailed = await sendMail(
+			formatVerificationPayload(otp, emailId, user)
+		);
 		if (mailed) {
 			const encryptedOtp = await bcrypt.hash(otp, 10);
 			const userOtp = await Otp.findOneAndUpdate(

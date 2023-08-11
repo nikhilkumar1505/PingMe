@@ -20,7 +20,6 @@ const MesssageSchema = new Schema(
 		conversationId: {
 			type: Schema.Types.ObjectId,
 			ref: 'Conversation',
-			required: true,
 		},
 		message: {
 			type: String,

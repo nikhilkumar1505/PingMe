@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<style>
+			.email-container { border: 1px solid black; width: min-content; padding:
+			10px 15px; border-radius:3px; background-color:#F1F1F1; text-align:center
+			} .email-container img{ width:10rem; height:10rem; } .user-info {
+			align-items: center; margin-left: 20px; margin-top:10px; } .user-info h3 {
+			margin: 0; padding:0; text-transform:uppercase } .user-info h5 { margin:
+			0; padding:0 }
+		</style>
+	</head>
+	<body>
+		<p>Guess what? You've received your a message from someone who is eager to
+			connect with you. Here are the details:</p>
+
+		<div class='email-container'>
+			<img src={{imageUrl}} alt='User Image' />
+			<div class='user-info'>
+				<h3>{{fullname}}</h3>
+				<h5>{{username}}</h5>
+			</div>
+		</div>
+
+		<p>To read your message and start a conversation, simply click the link
+			below:</p>
+
+		<a href={{messageLink}}>Click here to view the message</a>
+
+		<p>Feel free to explore the features of our app, reply to messages, and
+			connect with new friends, colleagues, or anyone you'd like.</p>
+
+		<p>If you have any questions, need assistance, or want to know more about
+			using Pingme, don't hesitate to reach out to our support team. We're here
+			to help!</p>
+
+		<p>Happy chatting,<br />
+			The PingMe Team</p>
+	</body>
+</html>
