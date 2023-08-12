@@ -6,9 +6,17 @@ import EmojiPicker, {
 	EmojiClickData,
 	SkinTonePickerLocation,
 } from 'emoji-picker-react';
+import { sendMessage } from '../../../store/controllers';
+import { Imessage } from '../../../types';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
-export const ChatInput = () => {
+interface ChatInputProp {
+	updateMessage: (val: Imessage) => void;
+}
+
+export const ChatInput: React.FC<ChatInputProp> = ({ updateMessage }) => {
 	const [input, setInput] = useState('');
+	const selectedChat = useAppSelector((state) => state.chat.selectedChat);
 	const [openEmoji, setOpenEmoji] = useState(false);
 
 	const handleEmojiChange = useCallback(() => {
@@ -31,10 +39,14 @@ export const ChatInput = () => {
 		[input]
 	);
 
-	const handleSubmit = useCallback(() => {
+	const handleSubmit = useCallback(async () => {
 		setOpenEmoji(false);
 		setInput('');
-	}, [input]);
+		const res = await sendMessage(selectedChat?.userId as string, input);
+		if (res) {
+			updateMessage(res);
+		}
+	}, [input, selectedChat]);
 
 	const handleEmojiClick = useCallback((emoji: EmojiClickData) => {
 		setInput((prev) => prev + emoji.emoji);

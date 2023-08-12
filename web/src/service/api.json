@@ -9,5 +9,8 @@
 	"AVATAR": "avatar",
 	"GET_DETAILS": "user/details",
 	"SEARCH": "user/search",
-	"UPDATE_AVATAR": "user/updateAvatar"
+	"UPDATE_AVATAR": "user/updateAvatar",
+	"GET_CHATS": "/user/message/all-chats",
+	"SEND_MESSAGE": "/user/message/send-message",
+	"GET_MESSAGE": "user/message/get-message"
 }

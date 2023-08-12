@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Iuser } from '../../types';
+import { Ichats, Iuser } from '../../types';
 
 interface AppStateProp {
-	chats: any[];
-	selectedChat: Iuser | null;
+	chats: Ichats[];
+	selectedChat: Ichats | Iuser | null;
 }
 const initialState: AppStateProp = {
 	chats: [],
@@ -14,10 +14,10 @@ const chatSlice = createSlice({
 	name: 'chat',
 	initialState,
 	reducers: {
-		updateChats(state, action: PayloadAction<any>) {
+		updateChats(state, action: PayloadAction<Ichats[]>) {
 			state.chats = action.payload;
 		},
-		updateSelectedChats(state, action: PayloadAction<Iuser>) {
+		updateSelectedChats(state, action: PayloadAction<Iuser | Ichats>) {
 			state.selectedChat = action.payload;
 		},
 	},

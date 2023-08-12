@@ -1,7 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Avatar } from '../../atoms/Avatar';
 import { useAppSelector } from '../../../hooks/useAppSelector';
+import { PiCheckBold, PiChecksBold } from 'react-icons/pi';
 
 interface ChatBoxProp {
 	imageUrl: string;
@@ -11,6 +12,8 @@ interface ChatBoxProp {
 	timer?: string;
 	handleClick?: (value?: any) => void;
 	id?: string;
+	messageStatus?: 'seen' | 'sent' | string;
+	isUnread?: boolean;
 }
 
 export const ChatBox: React.FC<ChatBoxProp> = ({
@@ -21,8 +24,11 @@ export const ChatBox: React.FC<ChatBoxProp> = ({
 	timer,
 	handleClick,
 	id,
+	messageStatus,
+	isUnread = false,
 }) => {
 	const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+	const theme = useTheme();
 	return (
 		<ChatListBox
 			lastIndex={lastIndex}
@@ -32,15 +38,33 @@ export const ChatBox: React.FC<ChatBoxProp> = ({
 			<NameTextWrapper>
 				<NameTimeWrapper>
 					<UserFullName>{title}</UserFullName>
-					{timer && <Timer>{timer}</Timer>}
+					{timer && <Timer unread={isUnread}>{timer}</Timer>}
 				</NameTimeWrapper>
 				<TextIconWrapper>
-					<LastText>{description}</LastText>
+					{messageStatus === 'sent' && (
+						<PiCheckBold
+							size={'1.3rem'}
+							color={theme.colors.dark}
+							style={{ marginRight: '0.3rem' }}
+						/>
+					)}
+					{messageStatus === 'seen' && (
+						<PiChecksBold
+							size={'1.3rem'}
+							color={theme.colors.primary}
+							style={{ marginRight: '0.3rem' }}
+						/>
+					)}
+					<LastText unread={isUnread}>{description}</LastText>
 				</TextIconWrapper>
 			</NameTextWrapper>
 		</ChatListBox>
 	);
 };
+
+interface Iunread {
+	unread?: boolean;
+}
 
 const NameTextWrapper = styled.div(() => ({
 	marginLeft: '1rem',
@@ -66,20 +90,24 @@ const UserFullName = styled.p(({ theme }) => ({
 
 const TextIconWrapper = styled.div(() => ({
 	maxWidth: '25rem',
+	display: 'flex',
+	alignItems: 'center',
 }));
 
-const LastText = styled.p(() => ({
+const LastText = styled.p<Iunread>(({ unread }) => ({
 	fontSize: '1.1rem',
 	textOverflow: 'ellipsis',
 	whiteSpace: 'nowrap',
 	overflow: 'hidden',
 	fontStyle: 'italic',
+	fontWeight: unread ? '700' : '500',
 }));
 
-const Timer = styled.p(() => ({
+const Timer = styled.p<Iunread>(({ unread }) => ({
 	fontSize: '0.9rem',
 	marginLeft: '1rem',
 	whiteSpace: 'nowrap',
+	fontWeight: unread ? '700' : '500',
 }));
 
 interface ChatListProp {

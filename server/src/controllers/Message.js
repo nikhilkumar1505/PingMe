@@ -18,6 +18,7 @@ export const sendMessage = expressAsyncHandler(async (req, res) => {
 	let conversationDoc = await Conversation.findOne({
 		users: { $all: [userId, recevierId] },
 	});
+	let messageDoc;
 
 	const recevier = await User.findById(recevierId);
 	const avatar = await Avatar.findById(req.user?.avatar);
@@ -27,7 +28,7 @@ export const sendMessage = expressAsyncHandler(async (req, res) => {
 	}
 
 	if (!conversationDoc) {
-		const messageDoc = await Message.create({
+		messageDoc = await Message.create({
 			sender: userId,
 			reciever: recevierId,
 			message,
@@ -48,7 +49,7 @@ export const sendMessage = expressAsyncHandler(async (req, res) => {
 			sendMail(mailPayload);
 		}
 	} else {
-		const messageDoc = await Message.create({
+		messageDoc = await Message.create({
 			sender: userId,
 			reciever: recevierId,
 			message,
@@ -61,10 +62,7 @@ export const sendMessage = expressAsyncHandler(async (req, res) => {
 	if (populateChat) {
 		res.status(200).send({
 			message: 'message sent',
-			data: {
-				message: populateChat.lastMessage,
-				conversationId: populateChat._id,
-			},
+			data: messageDoc,
 		});
 	}
 });
@@ -79,7 +77,9 @@ export const getmessages = expressAsyncHandler(async (req, res) => {
 		{ conversationId, status: 'sent', sender: recevierId },
 		{ status: 'seen' }
 	);
-	const conversations = await Message.find({ conversationId });
+	const conversations = await Message.find({ conversationId }).sort({
+		createdAt: 1,
+	});
 	if (!conversations.length) {
 		res.status(200).send({ message: 'No conversation', data: conversations });
 	}

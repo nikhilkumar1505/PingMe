@@ -9,7 +9,6 @@ export const handleErrors = (errorResponse: AxiosResponse) => {
 		store.dispatch(updateLoggedIn(false));
 		localStorage.clear();
 		toast.warn('Session Timeout!');
-		redirect('/');
 	} else {
 		toast.error(errorResponse.data.message);
 	}

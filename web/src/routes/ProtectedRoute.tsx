@@ -7,17 +7,19 @@ import { useAppDispatch } from '../hooks/useAppDispatch';
 import { getToken } from '../utils/user';
 import { updateLoading, updateLoggedIn } from '../store/slices';
 import PageLoader from '../components/organisim/PageLoader';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { getAllChat } from '../store/controllers/Chat.controller';
 
 const ProtectedRoute = () => {
 	const isSignedIn = useAppSelector((state) => state.app.isLoggedIn);
 	const isLoading = useAppSelector((state) => state.app.isloading);
 	const token = getToken();
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const loadUserContents = useCallback(async () => {
 		try {
-			redirect('/');
+			navigate('/', { replace: true });
 			dispatch(updateLoading(true));
 			await getDetails();
 		} finally {
@@ -33,6 +35,7 @@ const ProtectedRoute = () => {
 			loadUserContents();
 		} else {
 			dispatch(updateLoggedIn(false));
+			navigate('/', { replace: true });
 		}
 	}, [token]);
 

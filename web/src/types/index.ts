@@ -13,6 +13,16 @@ export interface Iuser {
 	userId: string;
 }
 
+export interface Ichats extends Omit<Iuser, 'avatarId'> {
+	imageUrl: string;
+	messageStatus: string;
+	userSentMessage: boolean;
+	message: string;
+	messageId: string;
+	time: string;
+	conversationId: string;
+}
+
 export interface loginProp {
 	username: string;
 	password: string;
@@ -40,4 +50,13 @@ export enum drawerState {
 	CHAT = 'chat',
 	SEARCH = 'search',
 	PROFILE = 'profile',
+}
+
+export interface Imessage {
+	messageId: string;
+	conversationId: string;
+	message: string;
+	time: string;
+	isUserSentMessage: boolean;
+	messageStatus: string;
 }

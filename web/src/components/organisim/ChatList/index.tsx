@@ -14,7 +14,7 @@ export const ChatList = () => {
 			case drawerState.SEARCH:
 				return <SearchList />;
 			default:
-				return <ConversationList />;
+				return <></>;
 		}
 	}, [drawer]);
 

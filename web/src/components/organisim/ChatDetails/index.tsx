@@ -3,9 +3,18 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { EmptyResult } from '../../atoms/EmptyResult';
 import { ChatDeatilsHeader, ChatInput, Conversation } from '../..';
+import { Imessage } from '../../../types';
 
 export const ChatDetails = () => {
+	const [messages, setMessage] = useState<Imessage[] | []>([]);
 	const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+
+	const updateMesage = useCallback(
+		(value: Imessage) => {
+			setMessage((prev) => [...prev, value]);
+		},
+		[messages]
+	);
 
 	if (!selectedChat) {
 		return (
@@ -22,8 +31,8 @@ export const ChatDetails = () => {
 	return (
 		<Container>
 			<ChatDeatilsHeader />
-			<Conversation />
-			<ChatInput />
+			<Conversation messages={messages} handleMessage={setMessage} />
+			<ChatInput updateMessage={updateMesage} />
 		</Container>
 	);
 };

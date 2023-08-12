@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ChatBox } from '../ChatBox';
 import styled, { css, keyframes } from 'styled-components';
 import { useAppSelector } from '../../../hooks/useAppSelector';
+import { getAllChat } from '../../../store/controllers';
+import { getRelativeTimeDescription } from '../../../utils/time';
+import { updateChats, updateSelectedChats } from '../../../store/slices';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
 
 export const ConversationList = () => {
-	const avatars = useAppSelector((state) => state.app.avatars);
+	const chats = useAppSelector((state) => state.chat.chats);
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		(async () => {
+			const res = await getAllChat();
+			dispatch(updateChats(res));
+		})();
+	}, []);
+
+	const handleCardClick = useCallback((item: any) => {
+		dispatch(updateSelectedChats(item));
+	}, []);
+
 	return (
 		<ListContainer>
-			{[...Array(10)].map((item, index) => {
-				return (
-					<ChatBox
-						imageUrl={avatars[0]?.image_url}
-						lastIndex={index !== 9}
-						key={index}
-						title={'janatataka aka'}
-						description={'come on bro this is so wrong'}
-					/>
-				);
-			})}
+			{chats.length > 0 &&
+				chats.map((item) => {
+					return (
+						<ChatBox
+							imageUrl={item.imageUrl}
+							lastIndex={true}
+							key={item.conversationId}
+							title={item?.fullName}
+							description={item?.message}
+							id={item.userId}
+							timer={getRelativeTimeDescription(item?.time, true)}
+							messageStatus={
+								item?.userSentMessage ? item?.messageStatus : undefined
+							}
+							isUnread={!item.userSentMessage && item?.messageStatus === 'sent'}
+							handleClick={() => handleCardClick(item)}
+						/>
+					);
+				})}
 		</ListContainer>
 	);
 };
@@ -35,7 +60,6 @@ const fadeToBlack = keyframes`
 const ListContainer = styled.div(
 	({ theme }) => ({
 		padding: '0.5rem 1.5rem 1rem',
-		borderBottom: `2px solid ${theme.colors.background2}`,
 	}),
 	css`
 		animation: ${fadeToBlack} 0.3s linear;

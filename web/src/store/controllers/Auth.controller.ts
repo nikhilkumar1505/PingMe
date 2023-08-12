@@ -6,7 +6,7 @@ import {
 	verifyOtpProp,
 } from '../../types';
 import { setToken } from '../../utils/user';
-import { updateLoading, updateLoggedIn } from '../slices';
+import { updateLoggedIn } from '../slices';
 import store from '../store';
 
 export const login = async (payload: loginProp) => {

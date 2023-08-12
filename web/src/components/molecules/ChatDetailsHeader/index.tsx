@@ -17,5 +17,5 @@ export const ChatDeatilsHeader = () => {
 };
 
 const Container = styled.div(() => ({
-	flex: 2,
+	height: 'max-content',
 }));
