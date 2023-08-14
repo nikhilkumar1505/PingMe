@@ -22,7 +22,7 @@ export const formatSendMessage = (emailId, friendData) => {
 		username: friendData?.username,
 		fullname: friendData?.fullName,
 		imageUrl: friendData?.imageUrl,
-		messageLink: 'https://www.google.com',
+		messageLink: 'https://pingme-lrtf.onrender.com/',
 	};
 
 	const element = template(info);
