@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import appSlice from './slices/App-slice';
 import userSlice from './slices/user-slice';
 import chatSlice from './slices/Chat-slice';

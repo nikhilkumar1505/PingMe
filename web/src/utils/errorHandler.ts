@@ -2,7 +2,6 @@ import { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import store from '../store/store';
 import { updateLoggedIn } from '../store/slices';
-import { redirect } from 'react-router-dom';
 
 export const handleErrors = (errorResponse: AxiosResponse) => {
 	if (errorResponse.status === 401) {

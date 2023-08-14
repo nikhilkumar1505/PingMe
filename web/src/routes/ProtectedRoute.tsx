@@ -8,7 +8,6 @@ import { getToken } from '../utils/user';
 import { updateLoading, updateLoggedIn } from '../store/slices';
 import PageLoader from '../components/organisim/PageLoader';
 import { useNavigate } from 'react-router-dom';
-import { getAllChat } from '../store/controllers/Chat.controller';
 
 const ProtectedRoute = () => {
 	const isSignedIn = useAppSelector((state) => state.app.isLoggedIn);

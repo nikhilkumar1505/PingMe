@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ChatListHeader, ConversationList, SearchList } from '../..';
 import { useAppSelector } from '../../../hooks/useAppSelector';

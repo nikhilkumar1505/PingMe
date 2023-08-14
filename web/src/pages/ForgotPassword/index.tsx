@@ -5,13 +5,11 @@ import {
 	ResetPassword,
 	ForgotPasswordEmail,
 	Otp,
-	Signup,
 } from '../../components';
 import styled from 'styled-components';
 import backgroundImage from '../../assets/Images/bg1.png';
 import { useFormik } from 'formik';
 import { EmailSchema } from '../../utils/validation';
-import ProfileFill from '../../components/organisim/ProfileFill';
 import { sendOtp, checkEmailExits } from '../../store/controllers';
 import { toast } from 'react-toastify';
 
