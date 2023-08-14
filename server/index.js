@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
-import AvatarRoutes from './routes/Avatar.js';
-import AuthRoutes from './routes/Auth.js';
-import UserRoutes from './routes/User.js';
-import { isAuth } from './middleware/auth.js';
+import AvatarRoutes from './src/routes/Avatar.js';
+import AuthRoutes from './src/routes/Auth.js';
+import UserRoutes from './src/routes/User.js';
+import { isAuth } from './src/middleware/auth.js';
 import cors from 'cors';
 import { Server } from 'socket.io';
 
