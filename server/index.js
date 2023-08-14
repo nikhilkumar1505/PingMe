@@ -17,10 +17,6 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use('/', (req, res) => {
-	res.send('<h1>iam listening</h1>');
-});
-
 app.use('/avatar', AvatarRoutes);
 app.use('/auth', AuthRoutes);
 app.use('/user', isAuth, UserRoutes);
