@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { styled } from 'styled-components';
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import { IoSend } from 'react-icons/io5';
@@ -7,17 +7,29 @@ import EmojiPicker, {
 	SkinTonePickerLocation,
 } from 'emoji-picker-react';
 import { sendMessage } from '../../../store/controllers';
-import { Imessage } from '../../../types';
+import { Ichats, Imessage } from '../../../types';
 import { useAppSelector } from '../../../hooks/useAppSelector';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { updateChatValue } from '../../../store/slices';
 
 interface ChatInputProp {
 	updateMessage: (val: Imessage) => void;
+	replaceMessage: (id: string, val: Imessage) => void;
 }
 
-export const ChatInput: React.FC<ChatInputProp> = ({ updateMessage }) => {
+export const ChatInput: React.FC<ChatInputProp> = ({
+	updateMessage,
+	replaceMessage,
+}) => {
+	const dispatch = useAppDispatch();
 	const [input, setInput] = useState('');
-	const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+	const socket = useAppSelector((state) => state.app.socket);
+	const selectedChat = useAppSelector(
+		(state) => state.chat.selectedChat
+	) as Ichats;
 	const [openEmoji, setOpenEmoji] = useState(false);
+	const [isTyping, setIsTyping] = useState(false);
+	const timerRef = useRef<NodeJS.Timeout | null>(null);
 
 	const handleEmojiChange = useCallback(() => {
 		setOpenEmoji((prev) => !prev);
@@ -26,8 +38,25 @@ export const ChatInput: React.FC<ChatInputProp> = ({ updateMessage }) => {
 	const handleInputChange = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			setInput(event.target.value);
+			if (socket) {
+				if (!isTyping) {
+					setIsTyping(true);
+					socket.emit('start-typing', selectedChat?.conversationId);
+				}
+				if (timerRef.current) {
+					clearTimeout(timerRef.current);
+				}
+				let lastTime = new Date().getTime();
+				timerRef.current = setTimeout(() => {
+					let diff = new Date().getTime() - lastTime > 3000;
+					if (diff && isTyping) {
+						socket?.emit('stop-typing', selectedChat?.conversationId);
+						setIsTyping(false);
+					}
+				}, 3000);
+			}
 		},
-		[]
+		[isTyping, socket, selectedChat?.conversationId, timerRef]
 	);
 
 	const handleKeyDown = useCallback(
@@ -42,11 +71,35 @@ export const ChatInput: React.FC<ChatInputProp> = ({ updateMessage }) => {
 	const handleSubmit = useCallback(async () => {
 		setOpenEmoji(false);
 		setInput('');
-		const res = await sendMessage(selectedChat?.userId as string, input);
+		socket?.emit('stop-typing', selectedChat?.conversationId);
+		setIsTyping(false);
+		const randomId = Math.floor(Math.random() * 1000000);
+		const payload = {
+			messageId: `${randomId}`,
+			conversationId: selectedChat?.conversationId,
+			message: input,
+			time: new Date().toISOString(),
+			isUserSentMessage: true,
+			messageStatus: 'sending',
+		};
+		updateMessage(payload as Imessage);
+
+		const res = await sendMessage(selectedChat?.userId, input);
 		if (res) {
-			updateMessage(res);
+			const socketPayload = { ...res, isUserSentMessage: false };
+			socket.emit('send-message', selectedChat.userId, socketPayload);
+			replaceMessage(`${randomId}`, res);
+			const slicePayload = {
+				conversationId: res.conversationId,
+				time: res.time,
+				message: res.message,
+				messageId: res.messageId,
+				userSentMessage: true,
+				messageStatus: res.messageStatus,
+			};
+			dispatch(updateChatValue(slicePayload));
 		}
-	}, [input, selectedChat]);
+	}, [input, selectedChat, socket]);
 
 	const handleEmojiClick = useCallback((emoji: EmojiClickData) => {
 		setInput((prev) => prev + emoji.emoji);

@@ -7,3 +7,5 @@ export enum HttpMethod {
 }
 
 export const ACCESS_TOKEN = 'access-token';
+
+export const BASE_URL = 'http://localhost:5000';

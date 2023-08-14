@@ -6,6 +6,7 @@ import AuthRoutes from './routes/Auth.js';
 import UserRoutes from './routes/User.js';
 import { isAuth } from './middleware/auth.js';
 import cors from 'cors';
+import { Server } from 'socket.io';
 
 dotenv.config();
 
@@ -34,7 +35,46 @@ mongoose
 		useUnifiedTopology: true,
 	})
 	.then(() => {
-		app.listen(PORT);
-		console.log('Conneted to port ' + PORT);
+		console.log('Conneted the mongoDb ' + PORT);
 	})
 	.catch((err) => console.log('err', err));
+
+const server = app.listen(PORT, () => {
+	console.log('lisiting in port ', PORT);
+});
+
+const io = new Server(server, { cors: { origin: '*', credentials: true } });
+
+global.onlineUser = {};
+io.on('connection', (socket) => {
+	socket.on('user-online', (userId) => {
+		onlineUser[userId] = socket.id;
+		socket.join(userId);
+		io.emit('getOnlineUser', onlineUser);
+	});
+	socket.on('join-room', (room) => {
+		socket.join(room);
+	});
+	socket.on('start-typing', (room) =>
+		socket.in(room).emit('started-typing', room)
+	);
+	socket.on('stop-typing', (room) =>
+		socket.in(room).emit('stopped-typing', room)
+	);
+	socket.on('send-message', (userId, data) => {
+		io.to(userId).emit('get-message', data);
+		socket.to(data.conversationId).emit('get-message-room', data);
+	});
+	socket.on('user-offline', (userId) => {
+		if (onlineUser[userId]) {
+			delete onlineUser[userId];
+			io.emit('getOnlineUser', onlineUser);
+		}
+	});
+	socket.on('disconnect', (userId) => {
+		if (onlineUser[userId]) {
+			delete onlineUser[userId];
+			io.emit('getOnlineUser', onlineUser);
+		}
+	});
+});

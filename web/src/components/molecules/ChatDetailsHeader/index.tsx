@@ -5,12 +5,21 @@ import styled from 'styled-components';
 
 export const ChatDeatilsHeader = () => {
 	const selectedChat = useAppSelector((state) => state.chat.selectedChat);
+	const onlineUsers = useAppSelector((state) => state.app.onlineUsers);
+
+	const subtitle: string =
+		selectedChat?.userId === 'ai-bot'
+			? selectedChat.username
+			: selectedChat && onlineUsers[selectedChat?.userId]
+			? 'online'
+			: 'offline';
+
 	return (
 		<Container>
 			<Header
 				imageUrl={selectedChat?.imageUrl}
 				title={selectedChat?.fullName}
-				subTitle={'online'}
+				subTitle={subtitle}
 			/>
 		</Container>
 	);

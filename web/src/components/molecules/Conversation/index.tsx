@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { styled, useTheme } from 'styled-components';
-import { EmptyResult, ChatShimmer } from '../..';
+import {
+	EmptyResult,
+	ChatShimmer,
+	MessageStatus,
+	ActivityLoader,
+	Day,
+} from '../..';
 import { getRandomQuote } from '../../../utils/user';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { getMessage } from '../../../store/controllers';
 import { Ichats, Imessage } from '../../../types';
 import { getFormatedTime } from '../../../utils/time';
-import { PiCheckBold, PiChecksBold } from 'react-icons/pi';
 import ScrollableFeed from 'react-scrollable-feed';
+import store from '../../../store/store';
 
 interface ConversationProp {
 	handleMessage: (val: Imessage[]) => void;
@@ -19,7 +25,8 @@ export const Conversation: React.FC<ConversationProp> = ({
 	messages,
 }) => {
 	const [loading, setLoading] = useState(false);
-	const theme = useTheme();
+	const [showTyping, setShowTyping] = useState(false);
+	const socket = useAppSelector((state) => state.app.socket);
 	const selectedChat = useAppSelector(
 		(state) => state.chat.selectedChat
 	) as Ichats;
@@ -28,10 +35,22 @@ export const Conversation: React.FC<ConversationProp> = ({
 		if (selectedChat) {
 			setLoading(true);
 			getMessage(selectedChat?.conversationId ?? '', `${selectedChat?.userId}`)
-				.then((res) => res.length > 0 && handleMessage(res))
+				.then((res) => handleMessage(res))
 				.finally(() => setLoading(false));
 		}
 	}, [selectedChat]);
+
+	useEffect(() => {
+		if (socket) {
+			socket?.on('started-typing', (room: string) => {
+				const selected = store.getState().chat.selectedChat as Ichats;
+				selected?.conversationId === room && setShowTyping(true);
+			});
+			socket?.on('stopped-typing', () => {
+				setShowTyping(false);
+			});
+		}
+	}, [socket, selectedChat]);
 
 	if (loading) {
 		return (
@@ -59,38 +78,40 @@ export const Conversation: React.FC<ConversationProp> = ({
 	return (
 		<Container>
 			<ScrollableFeed>
-				{messages.map((message) => {
+				{messages.map((message, index) => {
 					return (
-						<MessageWrapper
-							key={message.messageId}
-							isRight={message.isUserSentMessage}>
-							<MessageContainer isRight={message.isUserSentMessage}>
-								<MessageText isRight={message.isUserSentMessage}>
-									{message.message}
-								</MessageText>
-								<Time isRight={message.isUserSentMessage}>
-									{getFormatedTime(message.time)}
-									{message.isUserSentMessage &&
-										message.messageStatus === 'sent' && (
-											<PiCheckBold
-												size={'1.3rem'}
-												color={theme.colors.dark}
+						<>
+							<Day
+								index={index}
+								date={message?.time}
+								prevDate={messages[index - 1]?.time}
+							/>
+							<MessageWrapper
+								key={message?.messageId}
+								isRight={message?.isUserSentMessage}>
+								<MessageContainer isRight={message?.isUserSentMessage}>
+									<MessageText isRight={message?.isUserSentMessage}>
+										{message?.message}
+									</MessageText>
+									<Time isRight={message?.isUserSentMessage}>
+										{getFormatedTime(message?.time)}
+										{message?.isUserSentMessage && (
+											<MessageStatus
+												status={message?.messageStatus}
 												style={{ marginLeft: '0.3rem' }}
 											/>
 										)}
-									{message.isUserSentMessage &&
-										message.messageStatus === 'seen' && (
-											<PiChecksBold
-												size={'1.3rem'}
-												color={theme.colors.primary}
-												style={{ marginLeft: '0.3rem' }}
-											/>
-										)}
-								</Time>
-							</MessageContainer>
-						</MessageWrapper>
+									</Time>
+								</MessageContainer>
+							</MessageWrapper>
+						</>
 					);
 				})}
+				{showTyping && (
+					<TypingContainer>
+						<ActivityLoader />
+					</TypingContainer>
+				)}
 			</ScrollableFeed>
 		</Container>
 	);
@@ -101,7 +122,7 @@ const Container = styled.div(() => ({
 	flex: 1,
 	flexDirection: 'column',
 	overflow: 'scroll',
-	padding: '2rem 2.5rem',
+	padding: '2rem 2.5rem 0',
 }));
 
 const Slogan = styled.p(({ theme }) => ({
@@ -147,4 +168,12 @@ const Time = styled.p<IisRight>(({ isRight, theme }) => ({
 	justifyContent: 'flex-end',
 	color: isRight ? theme.colors.white : theme.colors.dark,
 	alignItems: 'center',
+}));
+
+const TypingContainer = styled.div(({ theme }) => ({
+	borderRadius: '2rem',
+	backgroundColor: theme.colors.background5,
+	padding: '1rem 2rem',
+	width: 'max-content',
+	marginTop: '0.25rem',
 }));

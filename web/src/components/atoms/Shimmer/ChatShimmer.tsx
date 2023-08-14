@@ -29,7 +29,7 @@ const Shimmer = styled.div`
 	margin: 0.25rem 1rem;
 	height: ${Math.random() * (6.5 - 4.3) + 4.2}rem;
 	border-radius: 0.8rem;
-	width: ${Math.random() * (70 - 20) + 20}%;
+	width: ${Math.random() * (70 - 35) + 40}%;
 	display: flex;
 `;
 

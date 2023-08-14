@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Avatar } from '../../atoms/Avatar';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { PiCheckBold, PiChecksBold } from 'react-icons/pi';
+import { MessageStatus } from '../../atoms/MessageStatus/index';
 
 interface ChatBoxProp {
 	imageUrl: string;
@@ -28,7 +28,6 @@ export const ChatBox: React.FC<ChatBoxProp> = ({
 	isUnread = false,
 }) => {
 	const selectedChat = useAppSelector((state) => state.chat.selectedChat);
-	const theme = useTheme();
 	return (
 		<ChatListBox
 			lastIndex={lastIndex}
@@ -41,20 +40,10 @@ export const ChatBox: React.FC<ChatBoxProp> = ({
 					{timer && <Timer unread={isUnread}>{timer}</Timer>}
 				</NameTimeWrapper>
 				<TextIconWrapper>
-					{messageStatus === 'sent' && (
-						<PiCheckBold
-							size={'1.3rem'}
-							color={theme.colors.dark}
-							style={{ marginRight: '0.3rem' }}
-						/>
-					)}
-					{messageStatus === 'seen' && (
-						<PiChecksBold
-							size={'1.3rem'}
-							color={theme.colors.primary}
-							style={{ marginRight: '0.3rem' }}
-						/>
-					)}
+					<MessageStatus
+						status={messageStatus}
+						style={{ marginRight: '0.3rem' }}
+					/>
 					<LastText unread={isUnread}>{description}</LastText>
 				</TextIconWrapper>
 			</NameTextWrapper>
@@ -101,6 +90,7 @@ const LastText = styled.p<Iunread>(({ unread }) => ({
 	overflow: 'hidden',
 	fontStyle: 'italic',
 	fontWeight: unread ? '700' : '500',
+	paddingRight: '1rem',
 }));
 
 const Timer = styled.p<Iunread>(({ unread }) => ({

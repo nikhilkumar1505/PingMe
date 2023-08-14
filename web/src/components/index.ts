@@ -26,3 +26,5 @@ export * from './molecules/ChatDetailsHeader';
 export * from './molecules/Conversation';
 export * from './molecules/ChatInput';
 export * from './atoms/Shimmer/ChatShimmer';
+export * from './atoms/MessageStatus';
+export * from './atoms/Day';

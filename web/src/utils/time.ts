@@ -1,6 +1,6 @@
 // Online Javascript Editor for free
 // Write, Edit and Run your Javascript code using JS Online Compiler
-export const getRelativeTimeDescription = (time: string, getTime: boolean) => {
+export const getRelativeTimeDescription = (time: string, getTime?: boolean) => {
 	const currentTime = new Date();
 	const inputTime = new Date(time);
 	const timeDifference = (+currentTime - +inputTime) / (1000 * 60 * 60 * 24);
