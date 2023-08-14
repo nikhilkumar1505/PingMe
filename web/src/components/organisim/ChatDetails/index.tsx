@@ -47,25 +47,20 @@ export const ChatDetails = () => {
 		});
 	}, [socket]);
 
-	const updateMesage = useCallback(
-		(value: Imessage) => {
-			setMessage((prev) => [...prev, value]);
-		},
-		[messages]
-	);
-	const replaceMessage = useCallback(
-		(id: string, value: Imessage) => {
-			setMessage((prev) =>
-				prev.map((item) => {
-					if (item.messageId === id) {
-						return value;
-					}
-					return item;
-				})
-			);
-		},
-		[messages]
-	);
+	const updateMesage = useCallback((value: Imessage) => {
+		setMessage((prev) => [...prev, value]);
+	}, []);
+
+	const replaceMessage = useCallback((id: string, value: Imessage) => {
+		setMessage((prev) =>
+			prev.map((item) => {
+				if (item.messageId === id) {
+					return value;
+				}
+				return item;
+			})
+		);
+	}, []);
 
 	if (!selectedChat) {
 		return (

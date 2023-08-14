@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ChatBox } from '../ChatBox';
 import styled, { css, keyframes } from 'styled-components';
 import { useAppSelector } from '../../../hooks/useAppSelector';

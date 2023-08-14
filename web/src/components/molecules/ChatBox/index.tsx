@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { Avatar } from '../../atoms/Avatar';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { MessageStatus } from '../../atoms/MessageStatus/index';

@@ -33,7 +33,7 @@ export const getMessage = async (
 ) => {
 	try {
 		const res = await ChatServices.getMessages({ conversationId, recevierId });
-		if (res.status == 200 && res.data?.data.length > 0) {
+		if (res.status === 200 && res.data?.data.length > 0) {
 			const userId = store.getState().user.userId;
 			const payload = [...res.data?.data].map((data) => {
 				return {

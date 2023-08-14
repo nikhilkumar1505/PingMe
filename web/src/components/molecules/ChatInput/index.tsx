@@ -123,7 +123,7 @@ export const ChatInput: React.FC<ChatInputProp> = ({
 			};
 			dispatch(updateChatValue(slicePayload));
 		}
-	}, [input, selectedChat, socket]);
+	}, [input, selectedChat?.userId, socket]);
 
 	const handleEmojiClick = useCallback((emoji: EmojiClickData) => {
 		setInput((prev) => prev + emoji.emoji);
