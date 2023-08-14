@@ -12,6 +12,7 @@ import {
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { Ichats, Imessage } from '../../../types';
 import store from '../../../store/store';
+import logo from '../../../assets/Images/logo.png';
 
 export const ConversationList = () => {
 	const chats = useAppSelector((state) => state.chat.chats);
@@ -39,12 +40,30 @@ export const ConversationList = () => {
 		});
 	}, [socket]);
 
-	const handleCardClick = useCallback((item: any) => {
+	const handleCardClick = useCallback((item: Ichats | any) => {
 		dispatch(updateSelectedChats(item));
 	}, []);
 
+	const Aipayload = {
+		avatarId: '12345',
+		username: 'personal Ai bot',
+		fullName: 'Pinger',
+		emailId: 'png@email.com',
+		imageUrl: logo,
+		userId: 'ai-bot',
+	};
+
 	return (
 		<ListContainer>
+			<ChatBox
+				imageUrl={Aipayload?.imageUrl}
+				key={Aipayload?.userId}
+				title={'Pinger'}
+				description={'Your Personal Ai Bot'}
+				id={Aipayload?.userId}
+				handleClick={() => handleCardClick(Aipayload)}
+				lastIndex={true}
+			/>
 			{chats.length > 0 &&
 				chats.map((item) => {
 					return (

@@ -5,7 +5,7 @@ import { EmptyResult } from '../../atoms/EmptyResult';
 import { ChatDeatilsHeader, ChatInput, Conversation } from '../..';
 import { Ichats, Imessage } from '../../../types';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { updateChatValue, updateMessageStatus } from '../../../store/slices';
+import { updateMessageStatus } from '../../../store/slices';
 import store from '../../../store/store';
 
 export const ChatDetails = () => {
@@ -15,6 +15,12 @@ export const ChatDetails = () => {
 	) as Ichats;
 	const socket = useAppSelector((state) => state.app.socket);
 	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (selectedChat?.userId === 'ai-bot') {
+			setMessage([]);
+		}
+	}, [selectedChat]);
 
 	useEffect(() => {
 		if (selectedChat?.conversationId) {

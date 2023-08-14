@@ -12,5 +12,6 @@
 	"UPDATE_AVATAR": "user/updateAvatar",
 	"GET_CHATS": "/user/message/all-chats",
 	"SEND_MESSAGE": "/user/message/send-message",
-	"GET_MESSAGE": "user/message/get-message"
+	"GET_MESSAGE": "user/message/get-message",
+	"CHAT_BOT": "/user/message/chat-bot"
 }

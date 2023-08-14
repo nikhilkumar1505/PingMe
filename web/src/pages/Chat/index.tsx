@@ -23,8 +23,8 @@ const Chat = () => {
 	useEffect(() => {
 		// Tab has focus
 		const handleFocus = () => {
-			socketIntilized.emit('user-online', userId);
-			socketIntilized.on('getOnlineUser', (users: any) => {
+			socketIntilized?.emit('user-online', userId);
+			socketIntilized?.on('getOnlineUser', (users: any) => {
 				dispatch(updateOnlineUser(users));
 			});
 		};

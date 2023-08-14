@@ -71,3 +71,21 @@ export const sendMessage = async (recevierId: string, message: string) => {
 		}
 	} catch {}
 };
+
+export const sendMessageToBot = async (message: string) => {
+	try {
+		const res = await ChatServices.sendMessagetoBot({ message });
+		if (res.status === 200) {
+			const data = res.data?.data;
+			return {
+				messageId: 'ai-bot',
+				message: data,
+				time: new Date().toISOString(),
+				isUserSentMessage: false,
+				messageStatus: 'seen',
+			} as Imessage;
+		}
+	} catch {
+		return {};
+	}
+};

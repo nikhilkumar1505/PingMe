@@ -6,11 +6,11 @@ import EmojiPicker, {
 	EmojiClickData,
 	SkinTonePickerLocation,
 } from 'emoji-picker-react';
-import { sendMessage } from '../../../store/controllers';
+import { sendMessage, sendMessageToBot } from '../../../store/controllers';
 import { Ichats, Imessage } from '../../../types';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { updateChatValue } from '../../../store/slices';
+import { updateChatValue, updateIsTyping } from '../../../store/slices';
 
 interface ChatInputProp {
 	updateMessage: (val: Imessage) => void;
@@ -38,10 +38,10 @@ export const ChatInput: React.FC<ChatInputProp> = ({
 	const handleInputChange = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			setInput(event.target.value);
-			if (socket) {
+			if (socket && selectedChat?.userId !== 'ai-bot') {
 				if (!isTyping) {
 					setIsTyping(true);
-					socket.emit('start-typing', selectedChat?.conversationId);
+					socket?.emit('start-typing', selectedChat?.conversationId);
 				}
 				if (timerRef.current) {
 					clearTimeout(timerRef.current);
@@ -68,11 +68,32 @@ export const ChatInput: React.FC<ChatInputProp> = ({
 		[input]
 	);
 
+	const handleAimessgae = useCallback(async () => {
+		try {
+			const randomId = Math.floor(Math.random() * 1000000);
+			const payload = {
+				messageId: `${randomId}`,
+				message: input,
+				time: new Date().toISOString(),
+				isUserSentMessage: true,
+				messageStatus: 'seen',
+			};
+			updateMessage(payload as Imessage);
+			dispatch(updateIsTyping(true));
+			const res = await sendMessageToBot(input);
+			updateMessage(res as Imessage);
+		} finally {
+			dispatch(updateIsTyping(false));
+		}
+	}, [input]);
+
 	const handleSubmit = useCallback(async () => {
 		setOpenEmoji(false);
 		setInput('');
-		socket?.emit('stop-typing', selectedChat?.conversationId);
-		setIsTyping(false);
+		if (selectedChat?.userId === 'ai-bot') {
+			handleAimessgae();
+			return;
+		}
 		const randomId = Math.floor(Math.random() * 1000000);
 		const payload = {
 			messageId: `${randomId}`,
@@ -84,10 +105,13 @@ export const ChatInput: React.FC<ChatInputProp> = ({
 		};
 		updateMessage(payload as Imessage);
 
+		socket?.emit('stop-typing', selectedChat?.conversationId);
+		setIsTyping(false);
+
 		const res = await sendMessage(selectedChat?.userId, input);
 		if (res) {
 			const socketPayload = { ...res, isUserSentMessage: false };
-			socket.emit('send-message', selectedChat.userId, socketPayload);
+			socket?.emit('send-message', selectedChat.userId, socketPayload);
 			replaceMessage(`${randomId}`, res);
 			const slicePayload = {
 				conversationId: res.conversationId,

@@ -6,6 +6,7 @@ import User from '../models/User.js';
 import { formatSendMessage } from '../utils/mailHelper.js';
 import Avatar from '../models/Avatar.js';
 import { sendMail } from '../services/Nodemailer.js';
+import { getBotResponse } from '../services/Chatbot.js';
 
 export const sendMessage = expressAsyncHandler(async (req, res) => {
 	const result = validationResult(req);
@@ -197,4 +198,14 @@ export const getAllConversation = expressAsyncHandler(async (req, res) => {
 	]);
 
 	res.status(200).send({ data: chats });
+});
+
+export const aimessage = expressAsyncHandler(async (req, res) => {
+	const result = validationResult(req);
+	if (!result.isEmpty()) {
+		res.status(400).send({ message: result.errors });
+	}
+	const { message } = req.body;
+	const chatResponce = await getBotResponse(message);
+	res.status(200).send({ data: chatResponce });
 });

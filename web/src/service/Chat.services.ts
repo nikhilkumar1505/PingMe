@@ -37,4 +37,12 @@ export class ChatServices {
 			params: { conversationId, recevierId },
 		});
 	};
+
+	static sendMessagetoBot = ({ message }: { message: string }) => {
+		return NetworkManager.getInstance().appRequest({
+			method: HttpMethod.POST,
+			url: apiConfig.CHAT_BOT,
+			data: { message },
+		});
+	};
 }

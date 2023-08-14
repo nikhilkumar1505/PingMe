@@ -4,10 +4,12 @@ import { Ichats, Iuser } from '../../types';
 interface AppStateProp {
 	chats: Ichats[];
 	selectedChat: Ichats | Iuser | null;
+	isTyping: boolean;
 }
 const initialState: AppStateProp = {
 	chats: [],
 	selectedChat: null,
+	isTyping: false,
 };
 
 const chatSlice = createSlice({
@@ -19,6 +21,9 @@ const chatSlice = createSlice({
 		},
 		updateSelectedChats(state, action: PayloadAction<Iuser | Ichats>) {
 			state.selectedChat = action.payload;
+		},
+		updateIsTyping(state, action: PayloadAction<boolean>) {
+			state.isTyping = action.payload;
 		},
 		updateMessageStatus(state, action: PayloadAction<any>) {
 			if (state.chats.length > 0) {
@@ -55,6 +60,7 @@ export const {
 	updateSelectedChats,
 	updateChatValue,
 	updateMessageStatus,
+	updateIsTyping,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

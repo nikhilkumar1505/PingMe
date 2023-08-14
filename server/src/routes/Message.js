@@ -4,6 +4,7 @@ import {
 	getAllConversation,
 	getmessages,
 	sendMessage,
+	aimessage,
 } from '../controllers/Message.js';
 
 const routes = Router();
@@ -20,5 +21,7 @@ routes.get(
 );
 
 routes.get('/all-chats', getAllConversation);
+
+routes.post('/chat-bot', [body('message').isString().notEmpty()], aimessage);
 
 export default routes;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { styled, useTheme } from 'styled-components';
+import React, { useState, useEffect, useMemo } from 'react';
+import { styled } from 'styled-components';
 import {
 	EmptyResult,
 	ChatShimmer,
@@ -14,6 +14,8 @@ import { Ichats, Imessage } from '../../../types';
 import { getFormatedTime } from '../../../utils/time';
 import ScrollableFeed from 'react-scrollable-feed';
 import store from '../../../store/store';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { updateIsTyping } from '../../../store/slices';
 
 interface ConversationProp {
 	handleMessage: (val: Imessage[]) => void;
@@ -24,15 +26,16 @@ export const Conversation: React.FC<ConversationProp> = ({
 	handleMessage,
 	messages,
 }) => {
+	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState(false);
-	const [showTyping, setShowTyping] = useState(false);
 	const socket = useAppSelector((state) => state.app.socket);
+	const isTyping = useAppSelector((state) => state.chat.isTyping);
 	const selectedChat = useAppSelector(
 		(state) => state.chat.selectedChat
 	) as Ichats;
 
 	useEffect(() => {
-		if (selectedChat) {
+		if (selectedChat && selectedChat?.userId !== 'ai-bot') {
 			setLoading(true);
 			getMessage(selectedChat?.conversationId ?? '', `${selectedChat?.userId}`)
 				.then((res) => handleMessage(res))
@@ -43,14 +46,29 @@ export const Conversation: React.FC<ConversationProp> = ({
 	useEffect(() => {
 		if (socket) {
 			socket?.on('started-typing', (room: string) => {
-				const selected = store.getState().chat.selectedChat as Ichats;
-				selected?.conversationId === room && setShowTyping(true);
+				const selected = store.getState().chat?.selectedChat as Ichats;
+				selected?.conversationId === room && dispatch(updateIsTyping(true));
 			});
 			socket?.on('stopped-typing', () => {
-				setShowTyping(false);
+				dispatch(updateIsTyping(false));
 			});
 		}
 	}, [socket, selectedChat]);
+
+	const emptyResultpayload = useMemo(() => {
+		if (selectedChat.userId !== 'ai-bot') {
+			return {
+				title: getRandomQuote(),
+				imageUrl:
+					'https://img.freepik.com/free-vector/messenger-concept-illustration_114360-1465.jpg?size=626&ext=jpg&ga=GA1.2.304103842.1690276064&semt=ais',
+			};
+		}
+		return {
+			imageUrl:
+				'https://img.freepik.com/premium-vector/customers-asking-questions-online-shop-chatbot-3d-isometric_1284-63042.jpg?size=626&ext=jpg&ga=GA1.2.304103842.1690276064&semt=ais',
+			title: 'Your Virtual Chat Partner: Talk, Learn, Thrive',
+		};
+	}, [selectedChat]);
 
 	if (loading) {
 		return (
@@ -66,10 +84,10 @@ export const Conversation: React.FC<ConversationProp> = ({
 		return (
 			<Container>
 				<EmptyResult
-					imageUrl='https://img.freepik.com/free-vector/messenger-concept-illustration_114360-1465.jpg?size=626&ext=jpg&ga=GA1.2.304103842.1690276064&semt=ais'
+					imageUrl={emptyResultpayload.imageUrl}
 					size='40rem'
 					title=''>
-					<Slogan>{getRandomQuote()}</Slogan>
+					<Slogan>{emptyResultpayload.title}</Slogan>
 				</EmptyResult>
 			</Container>
 		);
@@ -107,7 +125,7 @@ export const Conversation: React.FC<ConversationProp> = ({
 						</>
 					);
 				})}
-				{showTyping && (
+				{isTyping && (
 					<TypingContainer>
 						<ActivityLoader />
 					</TypingContainer>

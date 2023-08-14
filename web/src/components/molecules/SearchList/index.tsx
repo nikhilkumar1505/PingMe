@@ -63,13 +63,13 @@ export const SearchList = () => {
 					{users.length > 0 &&
 						users.map((item, index) => (
 							<ChatBox
-								imageUrl={item.imageUrl}
+								imageUrl={item?.imageUrl}
 								lastIndex={index !== 9}
-								key={item.userId}
-								title={item.fullName}
-								description={item.username}
+								key={item?.userId}
+								title={item?.fullName}
+								description={item?.username}
 								handleClick={() => handleCardClick(item)}
-								id={item.userId}
+								id={item?.userId}
 							/>
 						))}
 				</>
