@@ -8,4 +8,4 @@ export enum HttpMethod {
 
 export const ACCESS_TOKEN = 'access-token';
 
-export const BASE_URL = 'http://localhost:5000';
+export const BASE_URL = 'https://pingme-api.onrender.com/';

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar } from '../../atoms/Avatar';
+import { Avatar } from '../../';
 
 interface AvatarBoxProp {
 	imageUrl: string;

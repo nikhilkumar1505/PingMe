@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar } from '../../atoms/Avatar';
+import { Avatar, MessageStatus } from '../..';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { MessageStatus } from '../../atoms/MessageStatus/index';
 
 interface ChatBoxProp {
 	imageUrl: string;

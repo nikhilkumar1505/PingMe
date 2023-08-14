@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button } from '../../atoms/Button';
-import { TextInput } from '../../atoms/TextInput';
+import { Button, TextInput } from '../..';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 

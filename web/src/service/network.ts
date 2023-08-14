@@ -1,11 +1,11 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import apiConfig from './api.json';
 import { handleErrors } from '../utils/errorHandler';
+import { BASE_URL } from '../utils/constants';
 
 const DEFAULT_TIMEOUT = 30 * 1000;
 
 const appClient = axios.create({
-	baseURL: apiConfig.BASEURL,
+	baseURL: BASE_URL,
 	timeout: DEFAULT_TIMEOUT,
 	headers: {
 		'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ interface ProfileFillProps {
 	emailId: string;
 }
 
-const ProfileFill: React.FC<ProfileFillProps> = ({ emailId }) => {
+export const ProfileFill: React.FC<ProfileFillProps> = ({ emailId }) => {
 	const dispatch = useAppDispatch();
 	const avatars = useAppSelector((state) => state.app.avatars);
 	const avatarId = useAppSelector((state) => state.user.avatarId);
@@ -124,8 +124,6 @@ const ProfileFill: React.FC<ProfileFillProps> = ({ emailId }) => {
 		</>
 	);
 };
-
-export default ProfileFill;
 
 const Container = styled.div(() => ({
 	alignItems: 'center',

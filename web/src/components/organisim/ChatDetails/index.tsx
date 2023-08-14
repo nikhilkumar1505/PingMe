@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { EmptyResult } from '../../atoms/EmptyResult';
-import { ChatDeatilsHeader, ChatInput, Conversation } from '../..';
+import { ChatDeatilsHeader, ChatInput, Conversation, EmptyResult } from '../..';
 import { Ichats, Imessage } from '../../../types';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { updateMessageStatus } from '../../../store/slices';

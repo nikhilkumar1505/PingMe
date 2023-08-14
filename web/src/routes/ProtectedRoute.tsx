@@ -6,7 +6,7 @@ import { getAvatars, getDetails } from '../store/controllers/User.controller';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { getToken } from '../utils/user';
 import { updateLoading, updateLoggedIn } from '../store/slices';
-import PageLoader from '../components/organisim/PageLoader';
+import { PageLoader } from '../components';
 import { useNavigate } from 'react-router-dom';
 
 const ProtectedRoute = () => {

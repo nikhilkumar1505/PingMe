@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '../../atoms/Button';
-import { TextInput } from '../../atoms/TextInput';
+import { Button, TextInput } from '../..';
 import { Link } from 'react-router-dom';
 
 interface ForgotPasswordEmailProp {

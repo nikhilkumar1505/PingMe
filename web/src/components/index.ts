@@ -28,3 +28,5 @@ export * from './molecules/ChatInput';
 export * from './atoms/Shimmer/ChatShimmer';
 export * from './atoms/MessageStatus';
 export * from './atoms/Day';
+export * from './organisim/ProfileFill';
+export * from './organisim/PageLoader';

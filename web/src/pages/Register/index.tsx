@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { styled } from 'styled-components';
 import backgroundImage from '../../assets/Images/bg1.png';
-import { GlassMorphis, Logo, Otp, Signup } from '../../components';
+import { GlassMorphis, Logo, Otp, Signup, ProfileFill } from '../../components';
 import { useFormik } from 'formik';
-import ProfileFill from '../../components/organisim/ProfileFill';
 import { EmailSchema } from '../../utils/validation';
 import { sendOtp, checkEmailExits } from '../../store/controllers/';
 import { toast } from 'react-toastify';

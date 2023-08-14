@@ -2,8 +2,9 @@ import React from 'react';
 import { css, keyframes, styled } from 'styled-components';
 import loaderGif from '../../../assets/Images/animationGif.gif';
 import backgroundImage from '../../../assets/Images/backgroundImage.png';
-import { Logo } from '../../atoms/Logo';
-const PageLoader = () => {
+import { Logo } from '../..';
+
+export const PageLoader = () => {
 	return (
 		<Container>
 			<ImageGif src={loaderGif} alt='loading...' />
@@ -13,8 +14,6 @@ const PageLoader = () => {
 		</Container>
 	);
 };
-
-export default PageLoader;
 
 const Container = styled.div(({ theme }) => ({
 	backgroundImage: `url(${backgroundImage})`,

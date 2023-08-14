@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import OtpInput from 'react-otp-input';
 import './style.css';
 import { styled, useTheme } from 'styled-components';
-import { Button } from '../../atoms/Button';
+import { Button } from '../..';
 import { verifyOtp } from '../../../store/controllers';
 
 const TIMER = 100;
