@@ -1,3 +1,4 @@
+
 # PINGME: Your Ultimate Messaging Experience!
 
 Welcome to PINGME, where communication meets excitement! 🚀 Say goodbye to dull conversations and hello to a vibrant world of real-time messaging built using the MERN stack (MongoDB, Express.js, React.js, Node.js). PINGME isn't just an app; it's your gateway to connecting, expressing, and having a blast with friends and family.
@@ -44,3 +45,10 @@ Welcome to PINGME, where communication meets excitement! 🚀 Say goodbye to dul
 
 
 
+## screenshots 📷
+
+![image1](https://github.com/nikhilkumar1505/PingMe/assets/68338566/ab86c10f-6dc6-4bff-be6d-edb90c725fdb)
+![image2](https://github.com/nikhilkumar1505/PingMe/assets/68338566/4fd77ebc-bb16-4600-af63-ef500a96fd5d)
+![image3](https://github.com/nikhilkumar1505/PingMe/assets/68338566/d103a10f-9916-4ebb-874d-68e25579e77e)
+![image4](https://github.com/nikhilkumar1505/PingMe/assets/68338566/7405d9c7-9f4a-4256-a872-27f90059d234)
+![image5](https://github.com/nikhilkumar1505/PingMe/assets/68338566/ecae8c45-629d-4e98-a499-995c40427259)
