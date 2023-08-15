@@ -73,12 +73,20 @@ export const getmessages = expressAsyncHandler(async (req, res) => {
 	if (!result.isEmpty()) {
 		res.status(400).send({ message: result.errors });
 	}
+	const userId = req.user?._id;
 	const { conversationId, recevierId } = req.query;
+	let convId = conversationId;
+	if (!conversationId) {
+		const conversationDoc = await Conversation.findOne({
+			users: { $all: [userId, recevierId] },
+		});
+		convId = conversationDoc?._id;
+	}
 	await Message.updateMany(
-		{ conversationId, status: 'sent', sender: recevierId },
+		{ conversationId: convId, status: 'sent', sender: recevierId },
 		{ status: 'seen' }
 	);
-	const conversations = await Message.find({ conversationId }).sort({
+	const conversations = await Message.find({ conversationId: convId }).sort({
 		createdAt: 1,
 	});
 	if (!conversations.length) {

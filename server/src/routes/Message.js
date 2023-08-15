@@ -14,11 +14,7 @@ const messageVal = body('message').isString().notEmpty();
 
 routes.post('/send-message', [messageVal, recevierIdVal], sendMessage);
 
-routes.get(
-	'/get-message',
-	[query('conversationId').isMongoId(), query('recevierId').isMongoId()],
-	getmessages
-);
+routes.get('/get-message', [query('recevierId').isMongoId()], getmessages);
 
 routes.get('/all-chats', getAllConversation);
 
