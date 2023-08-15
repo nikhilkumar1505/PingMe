@@ -23,6 +23,7 @@ app.use('/user', isAuth, UserRoutes);
 
 app.use((error, req, res, next) => {
 	console.log('errr===>', error);
+	console.log('error_url--->', req?.url);
 	const status = error.statusCode || 500;
 	const message = error.message;
 	const data = error.data;
