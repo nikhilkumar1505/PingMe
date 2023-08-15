@@ -9,7 +9,7 @@ Welcome to PINGME, where communication meets excitement! 🚀 Say goodbye to dul
 
 - **Express Yourself:** Send messages in style and pepper them with your favorite emojis using the Emoji Picker. 🎉
 - **Stay Ahead:** PINGME uses WebSocket magic (thanks to Socket.io) to keep your chats rolling in real-time, so you'll never miss a beat. ⚡️
-- **Secure & Sneaky:** we ensure ensures your passwords are guarded like the Crown Jewels. 👑
+- **Secure & Sneaky:** we ensure  your passwords are guarded like the Crown Jewels. 👑
 - **Meet Pinger - Your Chat Bot Friend:** Say hello to "Pinger," your chat bot companion. Pinger is here to answer your questions, tell jokes, and keep the conversation fun and engaging.
 - **Forgot Password? No Worries:**  PINGME has your back. Just tap "Forgot Password," and we'll guide you back into the excitement. 💌
 - **Stay In The Loop:** Even when you're not actively using PINGME, we've got your back. Our background notification process will send you an email whenever a new user starts a conversation with you. 📬
